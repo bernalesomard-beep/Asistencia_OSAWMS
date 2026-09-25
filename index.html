@@ -691,7 +691,7 @@ function poblarStatusGrid(selected) {
     const activo = selected === code;
     return '<button type="button" class="p-2 rounded-xl border-2 flex flex-col items-center gap-1 cursor-pointer transition-all ' +
       (activo ? 'border-primary bg-primary/10' : 'border-surface-container-highest bg-surface-container-lowest hover:bg-surface-container-low') + '" ' +
-      'data-status="' + code + '" onclick="seleccionarEstado(\\'' + code + '\\')">' +
+      'data-status="' + code + '" onclick="seleccionarEstado(\'' + code + '\')">' +
       '<span class="w-7 h-7 rounded-lg ' + est.badgeClass + ' flex items-center justify-center font-cell-code text-cell-code font-bold">' + code + '</span>' +
       '<span class="text-[10px] text-on-surface leading-none text-center">' + est.label + '</span>' +
     '</button>';
