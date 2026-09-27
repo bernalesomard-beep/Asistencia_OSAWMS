@@ -585,12 +585,16 @@ function badgeHtml(codigo, dia, valor) {
     'data-codigo="' + codigo + '" data-dia="' + dia + '" title="' + est.label + '">' + v + '</span></td>';
 }
 
+function personalDelMesActual() {
+  return state.personal.filter(p => !!filaAsistenciaDe(p['CODIGO']));
+}
+
 function renderTable() {
   const tbody = document.getElementById('attendanceTableBody');
   if (!tbody) return;
   const nDias = diasEnMes(state.anio, state.mesIdx);
 
-  let personalFiltrado = state.personal.filter(p => {
+  let personalFiltrado = personalDelMesActual().filter(p => {
     if (state.filter === 'active') return !estaCesado(p['CODIGO']);
     if (state.filter === 'ceased') return estaCesado(p['CODIGO']);
     return true;
@@ -651,7 +655,7 @@ function renderTable() {
     '</tr>';
   }).join('');
 
-  tbody.innerHTML = rowsHtml || '<tr><td colspan="12" class="p-6 text-center text-on-surface-variant">No hay colaboradores para mostrar.</td></tr>';
+  tbody.innerHTML = rowsHtml || '<tr><td colspan="12" class="p-8 text-center text-on-surface-variant"><div class="flex flex-col items-center gap-2"><span class="material-symbols-outlined text-[32px] text-outline">event_busy</span><span>Todavía no hay marcaciones registradas para ' + nombreMesCapitalizado(state.mesIdx) + ' ' + state.anio + '.</span><span class="text-[12px]">Usa "+ Registrar Asistencia" para empezar — los colaboradores irán apareciendo aquí a medida que los marques.</span></div></td></tr>';
 
   tbody.querySelectorAll('span[data-codigo][data-dia]').forEach(badge => {
     badge.addEventListener('click', (e) => {
@@ -699,9 +703,12 @@ function renderKPIs() {
   set('kpiLicencias', licencias);
   set('kpiVacaciones', vacaciones);
   set('kpiCesesAlerta', cesados);
-  set('filterCountAll', totalNomina);
-  set('filterCountActive', activos);
-  set('filterCountCeased', cesados);
+  const delMes = personalDelMesActual();
+  const delMesActivos = delMes.filter(p => !estaCesado(p['CODIGO'])).length;
+  const delMesCesados = delMes.filter(p => estaCesado(p['CODIGO'])).length;
+  set('filterCountAll', delMes.length);
+  set('filterCountActive', delMesActivos);
+  set('filterCountCeased', delMesCesados);
   const btnCesesLabel = document.getElementById('btnCesesCountLabel');
   if (btnCesesLabel) btnCesesLabel.textContent = 'Gestionar Ceses (' + cesados + ')';
 
