@@ -436,14 +436,18 @@ function diasEnMes(anio, mesIdx) {
 }
 
 // Busca si (anio, mesIdx, dia) corresponde a un feriado cargado desde la hoja FERIADOS.
-// Devuelve { descripcion } o null. Acepta que FECHA venga como Date serializado (ISO) o como texto.
+// Devuelve { descripcion } o null. FECHA llega como texto "yyyy-MM-dd" (el backend ya
+// la formatea así para evitar corrimientos de zona horaria); se parsea manualmente
+// por componentes, nunca con new Date(stringISO), para no reinterpretar en UTC.
 function feriadoDe(anio, mesIdx, dia) {
   for (const f of state.feriados) {
     const raw = f['FECHA'];
     if (!raw) continue;
-    const d = new Date(raw);
-    if (isNaN(d.getTime())) continue;
-    if (d.getFullYear() === anio && d.getMonth() === mesIdx && d.getDate() === dia) {
+    const soloFecha = String(raw).slice(0, 10); // por si llega con hora, nos quedamos con yyyy-MM-dd
+    const partes = soloFecha.split('-');
+    if (partes.length !== 3) continue;
+    const y = Number(partes[0]), m = Number(partes[1]), d = Number(partes[2]);
+    if (y === anio && (m - 1) === mesIdx && d === dia) {
       return { descripcion: f['DESCRIPCION'] || 'Feriado' };
     }
   }
