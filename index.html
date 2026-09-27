@@ -130,6 +130,7 @@
 <input class="w-full bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline outline-none" id="searchInput" placeholder="Filtrar por colaborador, DNI o código..." type="text">
 <kbd class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-surface-container font-cell-code text-cell-code text-on-surface-variant">/</kbd>
 </div>
+<button class="p-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-error transition-colors cursor-pointer flex-shrink-0" id="btnLimpiarFiltro" title="Limpiar filtros" type="button"><span class="material-symbols-outlined text-[18px]">filter_alt_off</span></button>
 <div class="flex items-center bg-surface-container-low p-1 rounded-xl">
 <button class="p-1.5 rounded-lg bg-surface-container-lowest text-primary shadow-sm" title="Vista Matriz Completa">
 <span class="material-symbols-outlined text-[18px]">table_chart</span>
@@ -397,21 +398,22 @@ const DIAS_SEMANA = ['D','L','M','M','J','V','S']; // getDay(): 0=Domingo
 
 // Leyenda de estados (código -> {label, badgeClass})
 const ESTADOS = {
-  'A':  { label: 'Asistió',            badgeClass: 'bg-primary-container text-on-primary' },
+  'A':  { label: 'Asistió',            badgeClass: 'bg-green-600 text-white' },
   'T':  { label: 'Tardanza',           badgeClass: 'bg-surface-variant text-primary' },
   'F':  { label: 'Falta',              badgeClass: 'bg-error text-on-error' },
   'FJ': { label: 'Falta Justificada',  badgeClass: 'bg-surface-container-high text-on-surface' },
-  'DM': { label: 'Descanso Médico',    badgeClass: 'bg-tertiary text-on-tertiary' },
-  'L':  { label: 'Licencia',           badgeClass: 'bg-error-container text-on-error-container' },
-  'V':  { label: 'Vacaciones',         badgeClass: 'bg-surface-container-high text-primary' },
+  'DM': { label: 'Descanso Médico',    badgeClass: 'bg-sky-400 text-white' },
+  'L':  { label: 'Licencia',           badgeClass: 'bg-amber-600 text-white' },
+  'V':  { label: 'Vacaciones',         badgeClass: 'bg-purple-400 text-white' },
   'S':  { label: 'Suspensión',         badgeClass: 'bg-secondary text-on-secondary' },
-  'C':  { label: 'Cesado',             badgeClass: 'bg-inverse-surface text-inverse-on-surface' }
+  'C':  { label: 'Cesado',             badgeClass: 'bg-red-900 text-white' }
 };
 
 // Estado global de la app
 const state = {
   personal: [],
   asistencia: [],
+  feriados: [],
   anio: null,
   mesIdx: null, // 0-11
   filter: 'all',
@@ -431,6 +433,21 @@ function initPeriodoActual() {
 
 function diasEnMes(anio, mesIdx) {
   return new Date(anio, mesIdx + 1, 0).getDate();
+}
+
+// Busca si (anio, mesIdx, dia) corresponde a un feriado cargado desde la hoja FERIADOS.
+// Devuelve { descripcion } o null. Acepta que FECHA venga como Date serializado (ISO) o como texto.
+function feriadoDe(anio, mesIdx, dia) {
+  for (const f of state.feriados) {
+    const raw = f['FECHA'];
+    if (!raw) continue;
+    const d = new Date(raw);
+    if (isNaN(d.getTime())) continue;
+    if (d.getFullYear() === anio && d.getMonth() === mesIdx && d.getDate() === dia) {
+      return { descripcion: f['DESCRIPCION'] || 'Feriado' };
+    }
+  }
+  return null;
 }
 
 function fechaISO_(date) {
@@ -469,6 +486,7 @@ async function cargarDatos() {
     const data = await apiGetAll();
     state.personal = data.personal || [];
     state.asistencia = data.asistencia || [];
+    state.feriados = data.feriados || [];
     if (syncLabel) syncLabel.textContent = 'En línea';
     render();
   } catch (err) {
@@ -525,10 +543,16 @@ function renderDayHeaders() {
   for (let d = 1; d <= nDias; d++) {
     const fecha = new Date(state.anio, state.mesIdx, d);
     const esFDS = fecha.getDay() === 0 || fecha.getDay() === 6;
+    const feriado = feriadoDe(state.anio, state.mesIdx, d);
     const th = document.createElement('th');
     th.setAttribute('data-day-th', '1');
-    th.className = 'w-8 text-center p-1 font-cell-code text-cell-code' + (esFDS ? ' bg-surface-container' : '');
-    th.innerHTML = d + '<div class="text-[9px] font-normal ' + (esFDS ? 'text-secondary' : 'text-on-surface-variant') + '">' + DIAS_SEMANA[fecha.getDay()] + '</div>';
+    let claseFondo = '';
+    let colorTexto = 'text-on-surface-variant';
+    if (feriado) { claseFondo = ' bg-orange-800'; colorTexto = 'text-orange-100'; th.title = feriado.descripcion; }
+    else if (esFDS) { claseFondo = ' bg-slate-600'; colorTexto = 'text-slate-200'; }
+    th.className = 'w-8 text-center p-1 font-cell-code text-cell-code text-white' + claseFondo;
+    th.innerHTML = d + '<div class="text-[9px] font-normal ' + (claseFondo ? colorTexto : 'text-on-surface-variant') + '">' + DIAS_SEMANA[fecha.getDay()] + '</div>';
+    if (!claseFondo) th.classList.remove('text-white');
     frag.appendChild(th);
   }
   if (placeholder) {
@@ -542,9 +566,17 @@ function renderDayHeaders() {
 
 function badgeHtml(codigo, dia, valor) {
   const v = (valor || '').toString().trim().toUpperCase();
-  if (!v) return '<td class="p-0.5 text-center"></td>';
+  const fecha = new Date(state.anio, state.mesIdx, dia);
+  const esFDS = fecha.getDay() === 0 || fecha.getDay() === 6;
+  const feriado = feriadoDe(state.anio, state.mesIdx, dia);
+  let claseFondoTd = '';
+  let tituloTd = '';
+  if (feriado) { claseFondoTd = ' bg-orange-100'; tituloTd = ' title="' + feriado.descripcion + '"'; }
+  else if (esFDS) { claseFondoTd = ' bg-slate-200'; }
+
+  if (!v) return '<td class="p-0.5 text-center' + claseFondoTd + '"' + tituloTd + '></td>';
   const est = ESTADOS[v] || { label: v, badgeClass: 'bg-surface-container text-on-surface' };
-  return '<td class="p-0.5 text-center">' +
+  return '<td class="p-0.5 text-center' + claseFondoTd + '"' + tituloTd + '>' +
     '<span class="w-6 h-6 inline-flex items-center justify-center rounded ' + est.badgeClass + ' font-cell-code text-cell-code font-bold cursor-pointer transition-transform hover:scale-110" ' +
     'data-codigo="' + codigo + '" data-dia="' + dia + '" title="' + est.label + '">' + v + '</span></td>';
 }
@@ -574,7 +606,6 @@ function renderTable() {
 
     let asi = 0, falta = 0, dm = 0, lic = 0, vac = 0, tar = 0;
     if (fila) {
-      asi = Number(fila['ASITIDOS'] || 0);
       falta = Number(fila['FALTA'] || 0);
       dm = Number(fila['DM'] || 0);
       lic = Number(fila['LICENCIA'] || 0);
@@ -582,6 +613,7 @@ function renderTable() {
       for (let d = 1; d <= nDias; d++) {
         if (String(fila[String(d)] || '').toUpperCase() === 'T') tar++;
       }
+      asi = Number(fila['ASITIDOS'] || 0); // ya incluye A + T (calculado por el backend)
     }
 
     const horario = (p['HORARIO'] || (ultima ? ultima['HORARIO'] : '')) || '-';
@@ -1212,6 +1244,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Limpiar filtros
+  document.getElementById('btnLimpiarFiltro')?.addEventListener('click', () => {
+    if (searchInput) searchInput.value = '';
+    const accountSelect = document.getElementById('accountFilterSelect');
+    if (accountSelect) accountSelect.value = 'all';
+    state.filter = 'all';
+
+    document.getElementById('btnFilterAll').className = 'px-space-md py-1 rounded-lg bg-surface-container-lowest text-primary font-label-sm text-label-sm font-semibold shadow-sm';
+    document.getElementById('btnFilterActive').className = 'px-space-md py-1 rounded-lg hover:bg-surface-container text-on-surface-variant font-label-sm text-label-sm transition-colors';
+    document.getElementById('btnFilterCeased').className = 'px-space-md py-1 rounded-lg hover:bg-surface-container text-error font-label-sm text-label-sm transition-colors';
+
+    render();
+  });
 
   cargarDatos();
 });
