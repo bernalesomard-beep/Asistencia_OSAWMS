@@ -1309,11 +1309,24 @@ function generarReporteExcel() {
     cursor.setDate(cursor.getDate() + 1);
   }
 
-  // Resumen: conteo por tipo de observación presente en el detalle
+  // Resumen: conteo por tipo de observación presente en el detalle.
+  // Se cuenta usando la MISMA etiqueta que aparece en el detalle (ej. "FALTA"),
+  // y luego se traduce al texto plural que se muestra en el resumen (ej. "FALTAS").
+  const RESUMEN_LABEL_MAP = {
+    'FALTA': 'FALTAS',
+    'FALTA JUSTIFICADA': 'FALTAS JUSTIFICADAS',
+    'DESCANSO MEDICO': 'DESCANSO MEDICO',
+    'LICENCIA': 'LICENCIAS',
+    'VACACIONES': 'VACACIONES',
+    'SUSPENSION': 'SUSPENSIONES',
+    'CESADO': 'CESADO'
+  };
   const conteos = {};
   detalle.forEach(row => { conteos[row[0]] = (conteos[row[0]] || 0) + 1; });
-  const ordenResumen = ['FALTAS', 'FALTAS JUSTIFICADAS', 'DESCANSO MEDICO', 'LICENCIAS', 'VACACIONES', 'SUSPENSIONES', 'CESADO'];
-  const resumen = ordenResumen.filter(k => conteos[k] > 0).map(k => [k, conteos[k]]);
+  const ordenDetalle = ['FALTA', 'FALTA JUSTIFICADA', 'DESCANSO MEDICO', 'LICENCIA', 'VACACIONES', 'SUSPENSION', 'CESADO'];
+  const resumen = ordenDetalle
+    .filter(k => conteos[k] > 0)
+    .map(k => [RESUMEN_LABEL_MAP[k], conteos[k]]);
 
   // ---- Construcción del libro con ExcelJS ----
   const wb = new ExcelJS.Workbook();
