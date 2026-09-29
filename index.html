@@ -55,7 +55,7 @@
 </div>
 </div>
 <!-- Faltas (F) -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md hover:ring-1 hover:ring-error/40 transition-all" onclick="abrirDetalleKpi('faltas')" title="Ver detalle de faltas del mes">
 <div class="flex items-center justify-between text-error">
 <span class="font-label-sm text-label-sm uppercase font-bold">Faltas (F)</span>
 <span class="w-2.5 h-2.5 rounded-full bg-error"></span>
@@ -65,6 +65,7 @@
 <span class="font-label-sm text-label-sm text-error mt-1 flex items-center gap-0.5">
 <span class="material-symbols-outlined text-[12px]">warning</span> Crítico (Injustif.)
         </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant underline">Ver detalle</span>
 </div>
 </div>
 <!-- Tardanzas (T) -->
@@ -101,14 +102,14 @@
 </div>
 </div>
 <!-- Vacaciones (V) -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md hover:ring-1 hover:ring-purple-400 transition-all" onclick="abrirDetalleKpi('vacaciones')" title="Ver detalle de vacaciones y retornos">
 <div class="flex items-center justify-between text-primary-container">
 <span class="font-label-sm text-label-sm uppercase font-bold">Vacaciones (V)</span>
 <span class="w-2.5 h-2.5 rounded-full bg-primary-fixed-dim"></span>
 </div>
 <div class="mt-2">
 <div class="font-display-lg text-display-lg text-primary-container leading-none" id="kpiVacaciones">-</div>
-<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">Programación Julio</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1 underline">Ver detalle y retornos</span>
 </div>
 </div>
 <!-- Alerta Ceses -->
@@ -237,6 +238,25 @@
 </table>
 </div>
 </div>
+<!-- MODAL: DETALLE KPI (Faltas / Vacaciones) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-inverse-surface/40 backdrop-blur-sm hidden" id="detalleKpiModal" onclick="if(event.target===this)cerrarDetalleKpi()">
+<div class="bg-surface-container-lowest w-full max-w-4xl rounded-xl shadow-xl flex flex-col overflow-hidden">
+<div class="px-space-lg py-space-md flex items-center justify-between" id="detalleKpiHeader">
+<div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[24px]" id="detalleKpiIcon"></span>
+<div><h2 class="font-headline-sm text-headline-sm font-bold" id="detalleKpiTitulo"></h2><p class="font-label-sm text-label-sm opacity-90" id="detalleKpiPeriodo"></p></div></div>
+<button class="p-1 rounded-lg hover:bg-black/10 transition-colors" onclick="cerrarDetalleKpi()" type="button"><span class="material-symbols-outlined text-[20px]">close</span></button>
+</div>
+<div class="p-space-lg flex flex-col gap-space-md max-h-[716px] overflow-y-auto">
+<div class="bg-surface-container-low p-space-md rounded-xl font-body-md text-body-md text-on-surface" id="detalleKpiResumen"></div>
+<div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low font-label-sm text-label-sm text-on-surface uppercase tracking-wider"><tr id="detalleKpiHead"></tr></thead>
+<tbody class="divide-y divide-surface-container font-body-md text-body-md" id="detalleKpiBody"></tbody></table></div>
+</div>
+<div class="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Datos en vivo desde Google Sheets</span>
+<button class="px-space-md py-1.5 rounded-xl bg-surface-container-highest text-on-surface font-title-md text-title-md hover:bg-surface-dim transition-colors" onclick="cerrarDetalleKpi()" type="button">Cerrar Ventana</button>
+</div></div></div>
+
 <!-- MODAL: NUEVO / EDITAR COLABORADOR -->
 
 <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-inverse-surface/40 backdrop-blur-sm hidden" id="cesesModal">
@@ -814,7 +834,7 @@ async function aplicarEstadoSeleccion(codigoEstado) {
   const panel = document.getElementById('panelSeleccion');
   if (panel) panel.style.opacity = '0.6';
   try {
-    await apiPost({
+    const resp = await apiPost({
       action: 'marcarMultiple',
       anio: state.anio,
       mes: mesNombre(state.mesIdx),
@@ -823,7 +843,7 @@ async function aplicarEstadoSeleccion(codigoEstado) {
     });
     const cantidad = state.seleccion.length;
     limpiarSeleccion();
-    await cargarDatos();
+    await refrescarTrasGuardar_(resp);
     mostrarToast(cantidad + ' celda(s) actualizada(s) a "' + ESTADOS[codigoEstado].label + '".');
   } catch (err) {
     if (panel) panel.style.opacity = '1';
@@ -1260,9 +1280,10 @@ async function saveDayEdit() {
   btn.disabled = true;
   const originalHtml = btn.innerHTML;
   btn.innerHTML = '<span>Guardando...</span>';
+  let resp;
   try {
     if (state.editMode === 'create' && state.marcacionModo === 'rango') {
-      await apiPost({
+      resp = await apiPost({
         action: 'marcarRango',
         codigo: state.editTarget.codigo,
         valor: state.editTarget.valor,
@@ -1270,7 +1291,7 @@ async function saveDayEdit() {
         fechaFin: state.editTarget.fechaFin
       });
     } else {
-      await apiPost({
+      resp = await apiPost({
         action: 'marcarDia',
         codigo: state.editTarget.codigo,
         anio: state.anio,
@@ -1280,7 +1301,7 @@ async function saveDayEdit() {
       });
     }
     closeDayEditModal();
-    await cargarDatos();
+    await refrescarTrasGuardar_(resp);
     mostrarToast('Marcación guardada correctamente en el Google Sheet.');
   } catch (err) {
     errBox.textContent = 'Error al guardar: ' + err.message;
@@ -1292,6 +1313,131 @@ async function saveDayEdit() {
 }
 
 // ---------- Ceses ----------
+
+// ---------- Detalle de KPIs (Faltas / Vacaciones) ----------
+
+function escHtml_(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function pad2_(n) { return String(n).padStart(2, '0'); }
+function fmtFechaCorta_(d) {
+  return DIAS_SEMANA_NOMBRE[d.getDay()].slice(0, 3) + ' ' + pad2_(d.getDate()) + ' ' + nombreMesCapitalizado(d.getMonth()).slice(0, 3);
+}
+function valorDiaEn_(codigo, fecha) {
+  const fila = filaAsistenciaDe(codigo, fecha.getFullYear(), fecha.getMonth());
+  return fila ? String(fila[String(fecha.getDate())] || '').toUpperCase() : '';
+}
+function esNoLaborable_(f) {
+  return f.getDay() === 0 || f.getDay() === 6 || !!feriadoDe(f.getFullYear(), f.getMonth(), f.getDate());
+}
+// Días vacíos de fin de semana / feriado entre dos días de vacaciones no cortan el bloque.
+function puenteVacaciones_(codigo, a, b) {
+  const x = new Date(a); x.setDate(x.getDate() + 1);
+  while (x < b) {
+    if (valorDiaEn_(codigo, x) !== '' || !esNoLaborable_(x)) return false;
+    x.setDate(x.getDate() + 1);
+  }
+  return true;
+}
+// Bloques de vacaciones que tocan el mes seleccionado (pueden empezar antes o terminar después).
+function bloquesVacaciones_(codigo) {
+  const fechas = [];
+  for (let off = -2; off <= 2; off++) {
+    const base = new Date(state.anio, state.mesIdx + off, 1);
+    const fila = filaAsistenciaDe(codigo, base.getFullYear(), base.getMonth());
+    if (!fila) continue;
+    const n = diasEnMes(base.getFullYear(), base.getMonth());
+    for (let d = 1; d <= n; d++) {
+      if (String(fila[String(d)] || '').toUpperCase() === 'V') fechas.push(new Date(base.getFullYear(), base.getMonth(), d));
+    }
+  }
+  const bloques = [];
+  fechas.forEach(f => {
+    const ult = bloques[bloques.length - 1];
+    if (ult && puenteVacaciones_(codigo, ult.hasta, f)) { ult.hasta = f; ult.dias.push(f); }
+    else bloques.push({ desde: f, hasta: f, dias: [f] });
+  });
+  return bloques.filter(b => b.dias.some(d => d.getMonth() === state.mesIdx && d.getFullYear() === state.anio));
+}
+
+function abrirDetalleKpi(tipo) {
+  const etiqueta = nombreMesCapitalizado(state.mesIdx) + ' ' + state.anio;
+  const nDias = diasEnMes(state.anio, state.mesIdx);
+  const th = t => '<th class="p-3' + (t[1] ? ' text-center' : '') + '">' + t[0] + '</th>';
+  const celdaPersona = p => '<td class="p-3 font-semibold"><div>' + escHtml_(p['COLABORADOR'] || '-') + '</div><span class="text-[11px] text-on-surface-variant">Cód: ' + escHtml_(p['CODIGO']) + '</span></td>' +
+    '<td class="p-3"><span class="px-2 py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-bold">' + escHtml_(p['CUENTA'] || '-') + '</span></td>' +
+    '<td class="p-3 text-center font-cell-code text-cell-code">' + escHtml_(p['DNI'] || '-') + '</td>';
+  let cols, filasHtml = '', resumen, header, icono, titulo;
+
+  if (tipo === 'faltas') {
+    header = 'px-space-lg py-space-md flex items-center justify-between bg-error-container text-on-error-container';
+    icono = 'event_busy'; titulo = 'Detalle de Faltas del Mes';
+    cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], ['Faltas', 1], ['Días de falta']];
+    const lista = [];
+    state.personal.forEach(p => {
+      const fila = filaAsistenciaDe(p['CODIGO']);
+      if (!fila || !(Number(fila['FALTA'] || 0) > 0)) return;
+      const dias = [];
+      for (let d = 1; d <= nDias; d++) if (String(fila[String(d)] || '').toUpperCase() === 'F') dias.push(d);
+      lista.push({ p, total: Number(fila['FALTA']), dias });
+    });
+    lista.sort((a, b) => b.total - a.total || String(a.p['COLABORADOR']).localeCompare(String(b.p['COLABORADOR'])));
+    const total = lista.reduce((t, x) => t + x.total, 0);
+    resumen = '<b>' + total + '</b> falta(s) en <b>' + lista.length + '</b> colaborador(es) durante ' + etiqueta + '. Para el total acumulado usa <i>Exportar Reporte</i>.';
+    filasHtml = lista.map(({ p, total, dias }) => '<tr class="hover:bg-surface-container-low transition-colors">' + celdaPersona(p) +
+      '<td class="p-3 text-center font-cell-code text-cell-code text-error font-bold bg-error-container/30">' + total + '</td>' +
+      '<td class="p-3"><div class="flex flex-wrap gap-1">' + dias.map(d => '<span class="px-1.5 py-0.5 rounded bg-error text-on-error font-cell-code text-cell-code font-bold">' +
+        DIAS_SEMANA_NOMBRE[new Date(state.anio, state.mesIdx, d).getDay()].slice(0, 3) + ' ' + pad2_(d) + '</span>').join('') + '</div></td></tr>').join('');
+  } else {
+    header = 'px-space-lg py-space-md flex items-center justify-between bg-purple-100 text-purple-900';
+    icono = 'beach_access'; titulo = 'Detalle de Vacaciones y Retornos';
+    cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], ['Días', 1], ['Desde'], ['Último día'], ['Retorna']];
+    const lista = [];
+    state.personal.forEach(p => {
+      bloquesVacaciones_(p['CODIGO']).forEach(b => lista.push({ p, b }));
+    });
+    lista.sort((a, b) => a.b.hasta - b.b.hasta || String(a.p['COLABORADOR']).localeCompare(String(b.p['COLABORADOR'])));
+    const diasMes = lista.reduce((t, x) => t + x.b.dias.filter(d => d.getMonth() === state.mesIdx && d.getFullYear() === state.anio).length, 0);
+    resumen = '<b>' + new Set(lista.map(x => x.p['CODIGO'])).size + '</b> colaborador(es) con vacaciones en ' + etiqueta + ' (<b>' + diasMes + '</b> día(s) dentro del mes). El retorno es el día siguiente al último día de vacaciones.';
+    filasHtml = lista.map(({ p, b }) => {
+      const ret = new Date(b.hasta); ret.setDate(ret.getDate() + 1);
+      return '<tr class="hover:bg-surface-container-low transition-colors">' + celdaPersona(p) +
+        '<td class="p-3 text-center font-cell-code text-cell-code font-bold">' + b.dias.length + '</td>' +
+        '<td class="p-3">' + fmtFechaCorta_(b.desde) + '</td>' +
+        '<td class="p-3">' + fmtFechaCorta_(b.hasta) + '</td>' +
+        '<td class="p-3 font-bold text-purple-900 bg-purple-100/60">' + fmtFechaCorta_(ret) + '</td></tr>';
+    }).join('');
+  }
+
+  document.getElementById('detalleKpiHeader').className = header;
+  document.getElementById('detalleKpiIcon').textContent = icono;
+  document.getElementById('detalleKpiTitulo').textContent = titulo;
+  document.getElementById('detalleKpiPeriodo').textContent = 'Periodo: ' + etiqueta;
+  document.getElementById('detalleKpiResumen').innerHTML = resumen;
+  document.getElementById('detalleKpiHead').innerHTML = cols.map(th).join('');
+  document.getElementById('detalleKpiBody').innerHTML = filasHtml ||
+    '<tr><td colspan="' + cols.length + '" class="p-6 text-center text-on-surface-variant">No hay registros en este período.</td></tr>';
+  document.getElementById('detalleKpiModal').classList.remove('hidden');
+}
+function cerrarDetalleKpi() { document.getElementById('detalleKpiModal').classList.add('hidden'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarDetalleKpi(); });
+
+// ---------- Guardado rápido: usa las filas que devuelve el script (sin recargar todo) ----------
+
+function aplicarFilasActualizadas(filas) {
+  filas.forEach(n => {
+    const i = state.asistencia.findIndex(r => String(r['CODIGO']) === String(n['CODIGO']) &&
+      String(r['AÑO']) === String(n['AÑO']) && String(r['MES']).toUpperCase() === String(n['MES']).toUpperCase());
+    if (i >= 0) state.asistencia[i] = n; else state.asistencia.push(n);
+  });
+}
+async function refrescarTrasGuardar_(resp) {
+  if (resp && Array.isArray(resp.filas) && resp.filas.length) {
+    aplicarFilasActualizadas(resp.filas);
+    render();
+    if (resp.advertencia) alert(resp.advertencia);
+  } else {
+    await cargarDatos(); // respaldo si el script aún es la versión anterior
+  }
+}
 
 function renderCesesModal() {
   const tbody = document.getElementById('cesesTableBody');
@@ -1350,10 +1496,10 @@ async function saveCesar() {
   const original = btn.textContent;
   btn.textContent = 'Guardando...';
   try {
-    await apiPost({ action: 'cesarColaborador', codigo, anio, mes, desdeDia });
+    const resp = await apiPost({ action: 'cesarColaborador', codigo, anio, mes, desdeDia });
     closeCesarModal();
     document.getElementById('cesesModal').classList.add('hidden');
-    await cargarDatos();
+    await refrescarTrasGuardar_(resp);
     document.getElementById('cesesModal').classList.remove('hidden');
     mostrarToast('Cese registrado. Se marcó "C" desde el día ' + desdeDia + ' de ' + nombreMesCapitalizado(fecha.getMonth()) + ' en adelante.');
   } catch (err) {
