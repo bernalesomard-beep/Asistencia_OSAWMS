@@ -76,29 +76,29 @@
 </div>
 <div class="mt-2">
 <div class="font-display-lg text-display-lg text-on-surface leading-none" id="kpiTardanzas">-</div>
-<span class="font-label-sm text-label-sm text-secondary mt-1">3 cuentas impactadas</span>
+<span class="font-label-sm text-label-sm text-secondary mt-1" id="kpiTardanzasCuentas">-</span>
 </div>
 </div>
 <!-- Descansos Medicos (DM) -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md hover:ring-1 hover:ring-sky-400 transition-all" onclick="abrirDetalleKpi('dm')" title="Ver detalle de descansos médicos del mes">
 <div class="flex items-center justify-between text-tertiary">
 <span class="font-label-sm text-label-sm uppercase font-bold">Descanso Méd.</span>
 <span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
 </div>
 <div class="mt-2">
 <div class="font-display-lg text-display-lg text-tertiary leading-none" id="kpiDM">-</div>
-<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">Certificado EsSalud</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1 underline">Ver detalle · EsSalud</span>
 </div>
 </div>
 <!-- Licencias (L) -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md hover:ring-1 hover:ring-amber-500 transition-all" onclick="abrirDetalleKpi('licencias')" title="Ver detalle de licencias del mes">
 <div class="flex items-center justify-between text-on-surface-variant">
 <span class="font-label-sm text-label-sm uppercase font-bold">Licencias (L)</span>
 <span class="w-2.5 h-2.5 rounded-full bg-surface-dim"></span>
 </div>
 <div class="mt-2">
 <div class="font-display-lg text-display-lg text-on-surface leading-none" id="kpiLicencias">-</div>
-<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">1 Colaborador (Goce)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1 underline">Ver detalle de licencias</span>
 </div>
 </div>
 <!-- Vacaciones (V) -->
@@ -113,7 +113,7 @@
 </div>
 </div>
 <!-- Alerta Ceses -->
-<div class="bg-error-container p-space-md rounded-xl shadow-sm flex flex-col justify-between cursor-pointer hover:bg-error hover:text-on-error transition-all group" onclick="document.getElementById('cesesModal').classList.remove('hidden')">
+<div class="bg-error-container p-space-md rounded-xl shadow-sm flex flex-col justify-between cursor-pointer hover:bg-error hover:text-on-error transition-all group" onclick="abrirDetalleKpi('ceses')">
 <div class="flex items-center justify-between">
 <span class="font-label-sm text-label-sm uppercase font-bold group-hover:text-on-error text-on-error-container">Alerta Ceses</span>
 <span class="material-symbols-outlined text-[18px] group-hover:text-on-error text-on-error-container">exit_to_app</span>
@@ -238,13 +238,13 @@
 </table>
 </div>
 </div>
-<!-- MODAL: DETALLE KPI (Faltas / Vacaciones) -->
+<!-- MODAL: DETALLE KPI (Faltas / DM / Licencias / Vacaciones / Ceses) -->
 <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-inverse-surface/40 backdrop-blur-sm hidden" id="detalleKpiModal" onclick="if(event.target===this)cerrarDetalleKpi()">
 <div class="bg-surface-container-lowest w-full max-w-4xl rounded-xl shadow-xl flex flex-col overflow-hidden">
 <div class="px-space-lg py-space-md flex items-center justify-between" id="detalleKpiHeader">
 <div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[24px]" id="detalleKpiIcon"></span>
 <div><h2 class="font-headline-sm text-headline-sm font-bold" id="detalleKpiTitulo"></h2><p class="font-label-sm text-label-sm opacity-90" id="detalleKpiPeriodo"></p></div></div>
-<button class="p-1 rounded-lg hover:bg-black/10 transition-colors" onclick="cerrarDetalleKpi()" type="button"><span class="material-symbols-outlined text-[20px]">close</span></button>
+<div class="flex items-center gap-space-sm"><div class="flex items-center bg-white/60 rounded-lg"><button class="p-1 rounded-lg hover:bg-black/10 transition-colors" onclick="cambiarMesDetalleKpi(-1)" title="Mes anterior" type="button"><span class="material-symbols-outlined text-[20px]">chevron_left</span></button><span class="font-title-md text-title-md font-bold min-w-[130px] text-center" id="detalleKpiMes"></span><button class="p-1 rounded-lg hover:bg-black/10 transition-colors" onclick="cambiarMesDetalleKpi(1)" title="Mes siguiente" type="button"><span class="material-symbols-outlined text-[20px]">chevron_right</span></button></div><button class="p-1 rounded-lg hover:bg-black/10 transition-colors" onclick="cerrarDetalleKpi()" type="button"><span class="material-symbols-outlined text-[20px]">close</span></button></div>
 </div>
 <div class="p-space-lg flex flex-col gap-space-md max-h-[716px] overflow-y-auto">
 <div class="bg-surface-container-low p-space-md rounded-xl font-body-md text-body-md text-on-surface" id="detalleKpiResumen"></div>
@@ -254,7 +254,7 @@
 </div>
 <div class="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
 <span class="font-label-sm text-label-sm text-on-surface-variant">Datos en vivo desde Google Sheets</span>
-<button class="px-space-md py-1.5 rounded-xl bg-surface-container-highest text-on-surface font-title-md text-title-md hover:bg-surface-dim transition-colors" onclick="cerrarDetalleKpi()" type="button">Cerrar Ventana</button>
+<div class="flex items-center gap-space-sm"><button class="hidden px-space-md py-1.5 rounded-xl bg-error-container text-on-error-container font-title-md text-title-md hover:bg-error hover:text-on-error transition-colors" id="detalleKpiBtnGestionCeses" onclick="gestionarCesesDesdeDetalle()" type="button">Gestionar Ceses</button><button class="inline-flex items-center gap-1.5 px-space-md py-1.5 rounded-xl bg-primary text-on-primary font-title-md text-title-md hover:bg-tertiary transition-colors shadow-sm" onclick="descargarDetalleKpiExcel()" type="button"><span class="material-symbols-outlined text-[18px]">download</span>Descargar Excel</button><button class="px-space-md py-1.5 rounded-xl bg-surface-container-highest text-on-surface font-title-md text-title-md hover:bg-surface-dim transition-colors" onclick="cerrarDetalleKpi()" type="button">Cerrar Ventana</button></div>
 </div></div></div>
 
 <!-- MODAL: NUEVO / EDITAR COLABORADOR -->
@@ -651,18 +651,18 @@ function badgeHtml(codigo, dia, valor) {
   const feriado = feriadoDe(state.anio, state.mesIdx, dia);
   let claseFondoTd = '';
   let tituloTd = '';
-  if (feriado) { claseFondoTd = ' bg-orange-100'; tituloTd = ' title="' + feriado.descripcion + '"'; }
+  if (feriado) { claseFondoTd = ' bg-orange-100'; tituloTd = ' title="' + escHtml_(feriado.descripcion) + '"'; }
   else if (esFDS) { claseFondoTd = ' bg-slate-200'; }
 
   if (!v) {
     return '<td class="p-0.5 text-center' + claseFondoTd + '"' + tituloTd + '>' +
       '<span class="w-6 h-6 inline-flex items-center justify-center rounded cursor-pointer hover:bg-surface-container-highest/60 transition-colors" ' +
-      'data-codigo="' + codigo + '" data-dia="' + dia + '" title="Sin marcar — clic para registrar, Ctrl+clic para seleccionar"></span></td>';
+      'data-codigo="' + escHtml_(codigo) + '" data-dia="' + dia + '" title="Sin marcar — clic para registrar, Ctrl+clic para seleccionar"></span></td>';
   }
   const est = ESTADOS[v] || { label: v, badgeClass: 'bg-surface-container text-on-surface' };
   return '<td class="p-0.5 text-center' + claseFondoTd + '"' + tituloTd + '>' +
     '<span class="w-6 h-6 inline-flex items-center justify-center rounded ' + est.badgeClass + ' font-cell-code text-cell-code font-bold cursor-pointer transition-transform hover:scale-110" ' +
-    'data-codigo="' + codigo + '" data-dia="' + dia + '" title="' + est.label + ' (Ctrl+clic para seleccionar)">' + v + '</span></td>';
+    'data-codigo="' + escHtml_(codigo) + '" data-dia="' + dia + '" title="' + est.label + ' (Ctrl+clic para seleccionar)">' + escHtml_(v) + '</span></td>';
 }
 
 function personalDelMesActual() {
@@ -716,19 +716,19 @@ function renderTable() {
     return '<tr class="hover:bg-surface-container-low transition-colors group">' +
       '<td class="p-2 text-center font-cell-code text-cell-code text-on-surface-variant sticky left-0 z-20 bg-surface-container-lowest group-hover:bg-surface-container-low">' + (idx + 1) + '</td>' +
       '<td class="p-2 sticky left-10 z-20 bg-surface-container-lowest group-hover:bg-surface-container-low">' +
-        '<div class="font-title-md text-title-md text-on-surface font-semibold truncate">' + (p['COLABORADOR'] || '-') + '</div>' +
+        '<div class="font-title-md text-title-md text-on-surface font-semibold truncate">' + escHtml_(p['COLABORADOR'] || '-') + '</div>' +
         '<div class="flex items-center gap-1.5 mt-0.5">' +
-          '<span class="px-1.5 py-0.2 rounded bg-surface-container text-primary font-label-sm text-label-sm font-bold">' + cuenta + '</span>' +
-          '<span class="text-on-surface-variant text-[11px]">Ejec: ' + (p['EJECUTIVO'] || '-') + '</span>' +
+          '<span class="px-1.5 py-0.2 rounded bg-surface-container text-primary font-label-sm text-label-sm font-bold">' + escHtml_(cuenta) + '</span>' +
+          '<span class="text-on-surface-variant text-[11px]">Ejec: ' + escHtml_(p['EJECUTIVO'] || '-') + '</span>' +
         '</div>' +
       '</td>' +
       '<td class="p-2 sticky left-[300px] z-20 bg-surface-container-lowest group-hover:bg-surface-container-low shadow-[4px_0_6px_-2px_rgba(0,0,0,0.06)]">' +
-        '<div class="font-cell-code text-cell-code font-bold text-on-surface">' + (p['DNI'] || '-') + '</div>' +
-        '<div class="text-[10px] text-on-surface-variant">Cód: ' + codigo + '</div>' +
+        '<div class="font-cell-code text-cell-code font-bold text-on-surface">' + escHtml_(p['DNI'] || '-') + '</div>' +
+        '<div class="text-[10px] text-on-surface-variant">Cód: ' + escHtml_(codigo) + '</div>' +
       '</td>' +
-      '<td class="p-2"><div class="text-[11px] font-semibold text-primary">' + turno + '</div>' +
-        '<div class="text-[11px] text-on-surface-variant whitespace-nowrap">' + horario + '</div></td>' +
-      '<td class="p-2 font-cell-code text-cell-code text-primary">' + (p['CELULARES'] || '-') + '</td>' +
+      '<td class="p-2"><div class="text-[11px] font-semibold text-primary">' + escHtml_(turno) + '</div>' +
+        '<div class="text-[11px] text-on-surface-variant whitespace-nowrap">' + escHtml_(horario) + '</div></td>' +
+      '<td class="p-2 font-cell-code text-cell-code text-primary">' + escHtml_(p['CELULARES'] || '-') + '</td>' +
       '<td class="p-2"><span class="inline-flex items-center px-2 py-0.5 rounded-full ' + (cesado ? 'bg-error-container text-on-error-container' : 'bg-surface-container text-primary') + ' font-label-sm text-label-sm font-semibold">' + (cesado ? 'Cesado' : 'Activo') + '</span></td>' +
       diasHtml +
       '<td class="p-2 text-center font-cell-code text-cell-code font-bold bg-surface-container-low text-primary">' + asi + '</td>' +
@@ -856,6 +856,7 @@ async function aplicarEstadoSeleccion(codigoEstado) {
 function renderKPIs() {
   const totalNomina = state.personal.length;
   let activos = 0, cesados = 0, asistencias = 0, faltas = 0, tardanzas = 0, dm = 0, licencias = 0, vacaciones = 0;
+  const cuentasConTardanza = new Set();
 
   state.personal.forEach(p => {
     if (estaCesado(p['CODIGO'])) cesados++; else activos++;
@@ -868,7 +869,11 @@ function renderKPIs() {
       vacaciones += Number(fila['VACACIONES'] || 0);
       const nDias = diasEnMes(state.anio, state.mesIdx);
       for (let d = 1; d <= nDias; d++) {
-        if (String(fila[String(d)] || '').toUpperCase() === 'T') tardanzas++;
+        if (String(fila[String(d)] || '').toUpperCase() === 'T') {
+          tardanzas++;
+          // Una cuenta puede venir como "INVENTARIO / KAMILL": se cuenta cada cliente por separado.
+          String(p['CUENTA'] || fila['CUENTA'] || '-').split('/').forEach(c => { if (c.trim()) cuentasConTardanza.add(c.trim().toUpperCase()); });
+        }
       }
     }
   });
@@ -880,6 +885,7 @@ function renderKPIs() {
   set('kpiAsistencias', asistencias);
   set('kpiFaltas', faltas);
   set('kpiTardanzas', tardanzas);
+  set('kpiTardanzasCuentas', tardanzas === 0 ? 'Sin tardanzas' : cuentasConTardanza.size + (cuentasConTardanza.size === 1 ? ' cuenta impactada' : ' cuentas impactadas'));
   set('kpiDM', dm);
   set('kpiLicencias', licencias);
   set('kpiVacaciones', vacaciones);
@@ -920,7 +926,7 @@ function renderAccountFilter() {
   const cuentas = Array.from(new Set(state.personal.map(p => p['CUENTA']).filter(Boolean))).sort();
   const valorPrevio = select.value;
   select.innerHTML = '<option value="all">Cuentas: Todas</option>' +
-    cuentas.map(c => '<option value="' + c + '">Cuenta: ' + c + '</option>').join('');
+    cuentas.map(c => '<option value="' + escHtml_(c) + '">Cuenta: ' + escHtml_(c) + '</option>').join('');
   if (cuentas.includes(valorPrevio)) select.value = valorPrevio;
 }
 
@@ -1006,15 +1012,15 @@ function renderColaboradoresTable() {
     const cesado = estaCesado(p['CODIGO']);
     return '<tr class="hover:bg-surface-container-low transition-colors">' +
       '<td class="p-3 text-on-surface-variant">' + (idx + 1) + '</td>' +
-      '<td class="p-3 font-semibold text-on-surface">' + (p['COLABORADOR'] || '-') + (cesado ? ' <span class="ml-1 px-1.5 py-0.5 rounded bg-error-container text-on-error-container text-[10px] font-bold align-middle">CESADO</span>' : '') + '</td>' +
-      '<td class="p-3 font-cell-code text-cell-code">' + (p['DNI'] || '-') + '</td>' +
-      '<td class="p-3 font-cell-code text-cell-code text-on-surface-variant">' + (p['CODIGO'] || '-') + '</td>' +
-      '<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container text-primary font-label-sm text-label-sm font-bold">' + (p['CUENTA'] || '-') + '</span></td>' +
-      '<td class="p-3">' + (p['EJECUTIVO'] || '-') + '</td>' +
-      '<td class="p-3 font-cell-code text-cell-code text-primary">' + (p['CELULARES'] || '-') + '</td>' +
-      '<td class="p-3">' + (p['TURNO'] || '-') + '</td>' +
-      '<td class="p-3 whitespace-nowrap">' + (p['HORARIO'] || '-') + '</td>' +
-      '<td class="p-3 text-center"><button class="p-1.5 rounded-lg hover:bg-surface-container text-primary cursor-pointer" onclick="abrirEditarColaborador(\'' + p['CODIGO'] + '\')" title="Editar turno / horario" type="button"><span class="material-symbols-outlined text-[18px]">edit</span></button></td>' +
+      '<td class="p-3 font-semibold text-on-surface">' + escHtml_(p['COLABORADOR'] || '-') + (cesado ? ' <span class="ml-1 px-1.5 py-0.5 rounded bg-error-container text-on-error-container text-[10px] font-bold align-middle">CESADO</span>' : '') + '</td>' +
+      '<td class="p-3 font-cell-code text-cell-code">' + escHtml_(p['DNI'] || '-') + '</td>' +
+      '<td class="p-3 font-cell-code text-cell-code text-on-surface-variant">' + escHtml_escHtml_(p['CODIGO'] || '-') + '</td>' +
+      '<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container text-primary font-label-sm text-label-sm font-bold">' + escHtml_(p['CUENTA'] || '-') + '</span></td>' +
+      '<td class="p-3">' + escHtml_(p['EJECUTIVO'] || '-') + '</td>' +
+      '<td class="p-3 font-cell-code text-cell-code text-primary">' + escHtml_(p['CELULARES'] || '-') + '</td>' +
+      '<td class="p-3">' + escHtml_(p['TURNO'] || '-') + '</td>' +
+      '<td class="p-3 whitespace-nowrap">' + escHtml_(p['HORARIO'] || '-') + '</td>' +
+      '<td class="p-3 text-center"><button class="p-1.5 rounded-lg hover:bg-surface-container text-primary cursor-pointer" data-codigo="' + escHtml_(p['CODIGO']) + '" onclick="abrirEditarColaborador(this.dataset.codigo)" title="Editar turno / horario" type="button"><span class="material-symbols-outlined text-[18px]">edit</span></button></td>' +
     '</tr>';
   }).join('') || '<tr><td colspan="10" class="p-6 text-center text-on-surface-variant">No hay colaboradores registrados.</td></tr>';
 }
@@ -1144,9 +1150,9 @@ function conectarBuscadorColaborador(inputId, hiddenId, suggestionsId, onSelect)
       box.innerHTML = '<div class="p-3 text-on-surface-variant font-body-sm text-body-sm">Sin resultados</div>';
     } else {
       box.innerHTML = candidatos.map(p =>
-        '<div class="px-space-md py-2 hover:bg-surface-container-low cursor-pointer" data-codigo="' + p['CODIGO'] + '">' +
-        '<div class="font-title-md text-title-md text-on-surface">' + (p['COLABORADOR'] || '-') + '</div>' +
-        '<div class="font-label-sm text-label-sm text-on-surface-variant">DNI ' + (p['DNI'] || '-') + ' · Cód ' + p['CODIGO'] + '</div>' +
+        '<div class="px-space-md py-2 hover:bg-surface-container-low cursor-pointer" data-codigo="' + escHtml_(p['CODIGO']) + '">' +
+        '<div class="font-title-md text-title-md text-on-surface">' + escHtml_(p['COLABORADOR'] || '-') + '</div>' +
+        '<div class="font-label-sm text-label-sm text-on-surface-variant">DNI ' + escHtml_(p['DNI'] || '-') + ' · Cód ' + p['CODIGO'] + '</div>' +
         '</div>'
       ).join('');
       box.querySelectorAll('[data-codigo]').forEach(el => {
@@ -1316,7 +1322,7 @@ async function saveDayEdit() {
 
 // ---------- Detalle de KPIs (Faltas / Vacaciones) ----------
 
-function escHtml_(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function escHtml_(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function pad2_(n) { return String(n).padStart(2, '0'); }
 function fmtFechaCorta_(d) {
   return DIAS_SEMANA_NOMBRE[d.getDay()].slice(0, 3) + ' ' + pad2_(d.getDate()) + ' ' + nombreMesCapitalizado(d.getMonth()).slice(0, 3);
@@ -1337,11 +1343,11 @@ function puenteVacaciones_(codigo, a, b) {
   }
   return true;
 }
-// Bloques de vacaciones que tocan el mes seleccionado (pueden empezar antes o terminar después).
-function bloquesVacaciones_(codigo) {
+// Bloques de vacaciones que tocan el mes indicado (pueden empezar antes o terminar después).
+function bloquesVacaciones_(codigo, anio, mesIdx) {
   const fechas = [];
   for (let off = -2; off <= 2; off++) {
-    const base = new Date(state.anio, state.mesIdx + off, 1);
+    const base = new Date(anio, mesIdx + off, 1);
     const fila = filaAsistenciaDe(codigo, base.getFullYear(), base.getMonth());
     if (!fila) continue;
     const n = diasEnMes(base.getFullYear(), base.getMonth());
@@ -1355,68 +1361,291 @@ function bloquesVacaciones_(codigo) {
     if (ult && puenteVacaciones_(codigo, ult.hasta, f)) { ult.hasta = f; ult.dias.push(f); }
     else bloques.push({ desde: f, hasta: f, dias: [f] });
   });
-  return bloques.filter(b => b.dias.some(d => d.getMonth() === state.mesIdx && d.getFullYear() === state.anio));
+  return bloques.filter(b => b.dias.some(d => d.getMonth() === mesIdx && d.getFullYear() === anio));
+}
+
+// Primera fecha de cese (primer 'C') de un colaborador en toda su historia.
+function fechaCeseDe_(codigo) {
+  const filas = state.asistencia
+    .filter(r => String(r['CODIGO']) === String(codigo))
+    .map(r => ({ r, a: Number(r['AÑO']), m: MESES.indexOf(String(r['MES']).toUpperCase()) }))
+    .filter(x => x.m >= 0)
+    .sort((x, y) => x.a - y.a || x.m - y.m);
+  for (const x of filas) {
+    const dia = primerDiaCesado(x.r);
+    if (dia) return { anio: x.a, mesIdx: x.m, dia };
+    if (Number(x.r['CESADO']) > 0) return { anio: x.a, mesIdx: x.m, dia: null };
+  }
+  return null;
+}
+
+// ---------- Detalle KPI (Faltas / DM / Licencias / Vacaciones / Ceses) ----------
+
+// Colores de cada tipo: clases Tailwind para la pantalla y hex ARGB para el Excel.
+const DETALLE_TEMAS = {
+  faltas:      { titulo: 'Detalle de Faltas del Mes',          archivo: 'Faltas',      icono: 'event_busy',    header: 'bg-error-container text-on-error-container', chip: 'bg-error text-on-error',  num: 'text-error bg-error-container/30',  xl: { hdr: 'FFDAD6', hdrTxt: '93000A', chip: 'BA1A1A', num: 'FFE9E7', numTxt: 'BA1A1A' } },
+  dm:          { titulo: 'Detalle de Descansos Médicos del Mes', archivo: 'Descansos_Medicos', icono: 'medical_services', header: 'bg-sky-100 text-sky-900',     chip: 'bg-sky-400 text-white',   num: 'text-sky-700 bg-sky-100/60',        xl: { hdr: 'E0F2FE', hdrTxt: '0C4A6E', chip: '38BDF8', num: 'F0F9FF', numTxt: '0369A1' } },
+  licencias:   { titulo: 'Detalle de Licencias del Mes',        archivo: 'Licencias',   icono: 'assignment_ind', header: 'bg-amber-100 text-amber-900', chip: 'bg-amber-600 text-white', num: 'text-amber-700 bg-amber-100/60',    xl: { hdr: 'FEF3C7', hdrTxt: '78350F', chip: 'D97706', num: 'FFFBEB', numTxt: 'B45309' } },
+  vacaciones:  { titulo: 'Detalle de Vacaciones y Retornos',    archivo: 'Vacaciones',  icono: 'beach_access',  header: 'bg-purple-100 text-purple-900', chip: 'bg-purple-400 text-white', num: 'text-purple-900 bg-purple-100/60', xl: { hdr: 'F3E8FF', hdrTxt: '581C87', chip: 'C084FC', num: 'FAF5FF', numTxt: '581C87' } },
+  ceses:       { titulo: 'Detalle de Ceses y Bajas',            archivo: 'Ceses',       icono: 'person_off',    header: 'bg-error-container text-on-error-container', chip: 'bg-red-900 text-white', num: 'text-error bg-error-container/30', xl: { hdr: 'FFDAD6', hdrTxt: '93000A', chip: '7F1D1D', num: 'FFE9E7', numTxt: '7F1D1D' } }
+};
+const detalleKpiActual = { tipo: null, anio: null, mesIdx: null };
+
+function nombreDiaCorto_(anio, mesIdx, d) {
+  return DIAS_SEMANA_NOMBRE[new Date(anio, mesIdx, d).getDay()].slice(0, 3) + ' ' + pad2_(d);
+}
+
+// Arma los datos del detalle (una sola vez) para pintarlos en pantalla y exportarlos a Excel.
+// Cada fila: { p, celdas: [{ k: 'texto'|'num'|'chips'|'fuerte', v, chips }] }
+function datosDetalleKpi_(tipo, anio, mesIdx) {
+  const etiqueta = nombreMesCapitalizado(mesIdx) + ' ' + anio;
+  const nDias = diasEnMes(anio, mesIdx);
+  const filas = [];
+  let cols, resumen;
+
+  if (tipo === 'faltas' || tipo === 'dm' || tipo === 'licencias') {
+    const cfg = {
+      faltas:    { cod: 'F',  col: 'FALTA',    nom: 'Falta(s)',          colTitulo: 'Faltas',   diasTitulo: 'Días de falta' },
+      dm:        { cod: 'DM', col: 'DM',       nom: 'día(s) de descanso médico', colTitulo: 'Días', diasTitulo: 'Días de descanso médico' },
+      licencias: { cod: 'L',  col: 'LICENCIA', nom: 'día(s) de licencia', colTitulo: 'Días',    diasTitulo: 'Días de licencia' }
+    }[tipo];
+    cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], [cfg.colTitulo, 1], [cfg.diasTitulo]];
+    state.personal.forEach(p => {
+      const fila = filaAsistenciaDe(p['CODIGO'], anio, mesIdx);
+      if (!fila) return;
+      const dias = [];
+      for (let d = 1; d <= nDias; d++) if (String(fila[String(d)] || '').toUpperCase() === cfg.cod) dias.push(d);
+      const total = tipo === 'faltas' ? Number(fila[cfg.col] || 0) : dias.length;
+      if (!(total > 0)) return;
+      filas.push({ p, total, celdas: [
+        { k: 'num', v: total },
+        { k: 'chips', chips: dias.map(d => nombreDiaCorto_(anio, mesIdx, d)) }
+      ] });
+    });
+    filas.sort((a, b) => b.total - a.total || String(a.p['COLABORADOR']).localeCompare(String(b.p['COLABORADOR'])));
+    const suma = filas.reduce((t, x) => t + x.total, 0);
+    resumen = '<b>' + suma + '</b> ' + (tipo === 'faltas' ? 'falta(s)' : cfg.nom) + ' en <b>' + filas.length + '</b> colaborador(es) durante ' + etiqueta + '.' +
+      (tipo === 'faltas' ? ' Para el total acumulado usa <i>Exportar Reporte</i>.' : '');
+  } else if (tipo === 'vacaciones') {
+    cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], ['Días', 1], ['Desde'], ['Último día'], ['Retorna']];
+    const lista = [];
+    state.personal.forEach(p => bloquesVacaciones_(p['CODIGO'], anio, mesIdx).forEach(b => lista.push({ p, b })));
+    lista.sort((a, b) => a.b.hasta - b.b.hasta || String(a.p['COLABORADOR']).localeCompare(String(b.p['COLABORADOR'])));
+    lista.forEach(({ p, b }) => {
+      const ret = new Date(b.hasta); ret.setDate(ret.getDate() + 1);
+      filas.push({ p, celdas: [
+        { k: 'num', v: b.dias.length },
+        { k: 'texto', v: fmtFechaCorta_(b.desde) },
+        { k: 'texto', v: fmtFechaCorta_(b.hasta) },
+        { k: 'fuerte', v: fmtFechaCorta_(ret) }
+      ] });
+    });
+    const diasMes = lista.reduce((t, x) => t + x.b.dias.filter(d => d.getMonth() === mesIdx && d.getFullYear() === anio).length, 0);
+    resumen = '<b>' + new Set(lista.map(x => x.p['CODIGO'])).size + '</b> colaborador(es) con vacaciones en ' + etiqueta + ' (<b>' + diasMes + '</b> día(s) dentro del mes). El retorno es el día siguiente al último día de vacaciones.';
+  } else { // ceses
+    cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], ['Fecha de cese'], ['Condición'], ['Días cesado en el mes', 1]];
+    const lista = [];
+    state.personal.forEach(p => {
+      const cese = fechaCeseDe_(p['CODIGO']);
+      if (!cese) return;
+      // Entra si el cese ocurrió en este mes o antes (cesado acumulado).
+      if (cese.anio > anio || (cese.anio === anio && cese.mesIdx > mesIdx)) return;
+      const delMes = cese.anio === anio && cese.mesIdx === mesIdx;
+      const fila = filaAsistenciaDe(p['CODIGO'], anio, mesIdx);
+      let diasC = 0;
+      if (fila) for (let d = 1; d <= nDias; d++) if (String(fila[String(d)] || '').toUpperCase() === 'C') diasC++;
+      lista.push({ p, cese, delMes, diasC });
+    });
+    lista.sort((a, b) => (b.delMes - a.delMes) || (new Date(a.cese.anio, a.cese.mesIdx, a.cese.dia || 1) - new Date(b.cese.anio, b.cese.mesIdx, b.cese.dia || 1)));
+    lista.forEach(({ p, cese, delMes, diasC }) => {
+      const fechaTxt = cese.dia ? fmtFechaCorta_(new Date(cese.anio, cese.mesIdx, cese.dia)) + ' ' + cese.anio : nombreMesCapitalizado(cese.mesIdx) + ' ' + cese.anio;
+      filas.push({ p, celdas: [
+        { k: 'fuerte', v: fechaTxt },
+        { k: 'texto', v: delMes ? 'Baja del mes' : 'Cesado de meses anteriores' },
+        { k: 'num', v: diasC }
+      ] });
+    });
+    const nuevas = lista.filter(x => x.delMes).length;
+    resumen = '<b>' + nuevas + '</b> baja(s) en ' + etiqueta + ' y <b>' + (lista.length - nuevas) + '</b> cesado(s) de meses anteriores (<b>' + lista.length + '</b> en total).';
+  }
+  return { tipo, etiqueta, cols, filas, resumen, tema: DETALLE_TEMAS[tipo] };
+}
+
+function celdaPersonaHtml_(p) {
+  return '<td class="p-3 font-semibold"><div>' + escHtml_(p['COLABORADOR'] || '-') + '</div><span class="text-[11px] text-on-surface-variant">Cód: ' + escHtml_(p['CODIGO']) + '</span></td>' +
+    '<td class="p-3"><span class="px-2 py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-bold">' + escHtml_(p['CUENTA'] || '-') + '</span></td>' +
+    '<td class="p-3 text-center font-cell-code text-cell-code">' + escHtml_(p['DNI'] || '-') + '</td>';
+}
+
+function renderDetalleKpi() {
+  const { tipo, anio, mesIdx } = detalleKpiActual;
+  const data = datosDetalleKpi_(tipo, anio, mesIdx);
+  const t = data.tema;
+  const th = c => '<th class="p-3' + (c[1] ? ' text-center' : '') + '">' + c[0] + '</th>';
+  const filasHtml = data.filas.map(f => '<tr class="hover:bg-surface-container-low transition-colors">' + celdaPersonaHtml_(f.p) +
+    f.celdas.map(c => {
+      if (c.k === 'num') return '<td class="p-3 text-center font-cell-code text-cell-code font-bold ' + t.num + '">' + c.v + '</td>';
+      if (c.k === 'chips') return '<td class="p-3"><div class="flex flex-wrap gap-1">' + c.chips.map(x => '<span class="px-1.5 py-0.5 rounded ' + t.chip + ' font-cell-code text-cell-code font-bold">' + x + '</span>').join('') + '</div></td>';
+      if (c.k === 'fuerte') return '<td class="p-3 font-bold ' + t.num + '">' + escHtml_(c.v) + '</td>';
+      return '<td class="p-3">' + escHtml_(c.v) + '</td>';
+    }).join('') + '</tr>').join('');
+
+  document.getElementById('detalleKpiHeader').className = 'px-space-lg py-space-md flex items-center justify-between ' + t.header;
+  document.getElementById('detalleKpiIcon').textContent = t.icono;
+  document.getElementById('detalleKpiTitulo').textContent = t.titulo;
+  document.getElementById('detalleKpiPeriodo').textContent = 'Periodo: ' + data.etiqueta;
+  document.getElementById('detalleKpiMes').textContent = data.etiqueta;
+  document.getElementById('detalleKpiResumen').innerHTML = data.resumen;
+  document.getElementById('detalleKpiHead').innerHTML = data.cols.map(th).join('');
+  document.getElementById('detalleKpiBody').innerHTML = filasHtml ||
+    '<tr><td colspan="' + data.cols.length + '" class="p-6 text-center text-on-surface-variant">No hay registros en este período.</td></tr>';
+  document.getElementById('detalleKpiBtnGestionCeses').classList.toggle('hidden', tipo !== 'ceses');
 }
 
 function abrirDetalleKpi(tipo) {
-  const etiqueta = nombreMesCapitalizado(state.mesIdx) + ' ' + state.anio;
-  const nDias = diasEnMes(state.anio, state.mesIdx);
-  const th = t => '<th class="p-3' + (t[1] ? ' text-center' : '') + '">' + t[0] + '</th>';
-  const celdaPersona = p => '<td class="p-3 font-semibold"><div>' + escHtml_(p['COLABORADOR'] || '-') + '</div><span class="text-[11px] text-on-surface-variant">Cód: ' + escHtml_(p['CODIGO']) + '</span></td>' +
-    '<td class="p-3"><span class="px-2 py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-bold">' + escHtml_(p['CUENTA'] || '-') + '</span></td>' +
-    '<td class="p-3 text-center font-cell-code text-cell-code">' + escHtml_(p['DNI'] || '-') + '</td>';
-  let cols, filasHtml = '', resumen, header, icono, titulo;
-
-  if (tipo === 'faltas') {
-    header = 'px-space-lg py-space-md flex items-center justify-between bg-error-container text-on-error-container';
-    icono = 'event_busy'; titulo = 'Detalle de Faltas del Mes';
-    cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], ['Faltas', 1], ['Días de falta']];
-    const lista = [];
-    state.personal.forEach(p => {
-      const fila = filaAsistenciaDe(p['CODIGO']);
-      if (!fila || !(Number(fila['FALTA'] || 0) > 0)) return;
-      const dias = [];
-      for (let d = 1; d <= nDias; d++) if (String(fila[String(d)] || '').toUpperCase() === 'F') dias.push(d);
-      lista.push({ p, total: Number(fila['FALTA']), dias });
-    });
-    lista.sort((a, b) => b.total - a.total || String(a.p['COLABORADOR']).localeCompare(String(b.p['COLABORADOR'])));
-    const total = lista.reduce((t, x) => t + x.total, 0);
-    resumen = '<b>' + total + '</b> falta(s) en <b>' + lista.length + '</b> colaborador(es) durante ' + etiqueta + '. Para el total acumulado usa <i>Exportar Reporte</i>.';
-    filasHtml = lista.map(({ p, total, dias }) => '<tr class="hover:bg-surface-container-low transition-colors">' + celdaPersona(p) +
-      '<td class="p-3 text-center font-cell-code text-cell-code text-error font-bold bg-error-container/30">' + total + '</td>' +
-      '<td class="p-3"><div class="flex flex-wrap gap-1">' + dias.map(d => '<span class="px-1.5 py-0.5 rounded bg-error text-on-error font-cell-code text-cell-code font-bold">' +
-        DIAS_SEMANA_NOMBRE[new Date(state.anio, state.mesIdx, d).getDay()].slice(0, 3) + ' ' + pad2_(d) + '</span>').join('') + '</div></td></tr>').join('');
-  } else {
-    header = 'px-space-lg py-space-md flex items-center justify-between bg-purple-100 text-purple-900';
-    icono = 'beach_access'; titulo = 'Detalle de Vacaciones y Retornos';
-    cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], ['Días', 1], ['Desde'], ['Último día'], ['Retorna']];
-    const lista = [];
-    state.personal.forEach(p => {
-      bloquesVacaciones_(p['CODIGO']).forEach(b => lista.push({ p, b }));
-    });
-    lista.sort((a, b) => a.b.hasta - b.b.hasta || String(a.p['COLABORADOR']).localeCompare(String(b.p['COLABORADOR'])));
-    const diasMes = lista.reduce((t, x) => t + x.b.dias.filter(d => d.getMonth() === state.mesIdx && d.getFullYear() === state.anio).length, 0);
-    resumen = '<b>' + new Set(lista.map(x => x.p['CODIGO'])).size + '</b> colaborador(es) con vacaciones en ' + etiqueta + ' (<b>' + diasMes + '</b> día(s) dentro del mes). El retorno es el día siguiente al último día de vacaciones.';
-    filasHtml = lista.map(({ p, b }) => {
-      const ret = new Date(b.hasta); ret.setDate(ret.getDate() + 1);
-      return '<tr class="hover:bg-surface-container-low transition-colors">' + celdaPersona(p) +
-        '<td class="p-3 text-center font-cell-code text-cell-code font-bold">' + b.dias.length + '</td>' +
-        '<td class="p-3">' + fmtFechaCorta_(b.desde) + '</td>' +
-        '<td class="p-3">' + fmtFechaCorta_(b.hasta) + '</td>' +
-        '<td class="p-3 font-bold text-purple-900 bg-purple-100/60">' + fmtFechaCorta_(ret) + '</td></tr>';
-    }).join('');
-  }
-
-  document.getElementById('detalleKpiHeader').className = header;
-  document.getElementById('detalleKpiIcon').textContent = icono;
-  document.getElementById('detalleKpiTitulo').textContent = titulo;
-  document.getElementById('detalleKpiPeriodo').textContent = 'Periodo: ' + etiqueta;
-  document.getElementById('detalleKpiResumen').innerHTML = resumen;
-  document.getElementById('detalleKpiHead').innerHTML = cols.map(th).join('');
-  document.getElementById('detalleKpiBody').innerHTML = filasHtml ||
-    '<tr><td colspan="' + cols.length + '" class="p-6 text-center text-on-surface-variant">No hay registros en este período.</td></tr>';
+  detalleKpiActual.tipo = tipo;
+  detalleKpiActual.anio = state.anio;
+  detalleKpiActual.mesIdx = state.mesIdx;
+  renderDetalleKpi();
   document.getElementById('detalleKpiModal').classList.remove('hidden');
 }
+function cambiarMesDetalleKpi(delta) {
+  const d = new Date(detalleKpiActual.anio, detalleKpiActual.mesIdx + delta, 1);
+  detalleKpiActual.anio = d.getFullYear();
+  detalleKpiActual.mesIdx = d.getMonth();
+  renderDetalleKpi();
+}
+function gestionarCesesDesdeDetalle() {
+  cerrarDetalleKpi();
+  document.getElementById('cesesModal').classList.remove('hidden');
+}
+
+function descargarDetalleKpiExcel() {
+  if (typeof ExcelJS === 'undefined') { alert('No se pudo cargar el generador de Excel. Verifica tu conexión e intenta de nuevo.'); return; }
+  const data = datosDetalleKpi_(detalleKpiActual.tipo, detalleKpiActual.anio, detalleKpiActual.mesIdx);
+  const x = data.tema.xl;
+  const nCols = data.cols.length;
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet(data.tema.archivo.replace(/_/g, ' ').slice(0, 28) + ' ' + nombreMesCapitalizado(detalleKpiActual.mesIdx).slice(0, 3));
+  const fill = argb => ({ type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + argb } });
+  const borde = { style: 'thin', color: { argb: 'FFD3E4FE' } };
+  const bordes = { top: borde, left: borde, bottom: borde, right: borde };
+
+  // Título (banda de color del tipo)
+  ws.mergeCells(1, 1, 1, nCols);
+  const cT = ws.getCell(1, 1);
+  cT.value = data.tema.titulo;
+  cT.font = { bold: true, size: 14, color: { argb: 'FF' + x.hdrTxt } };
+  cT.fill = fill(x.hdr);
+  cT.alignment = { vertical: 'middle', indent: 1 };
+  ws.getRow(1).height = 26;
+  ws.mergeCells(2, 1, 2, nCols);
+  const cP = ws.getCell(2, 1);
+  cP.value = 'Periodo: ' + data.etiqueta;
+  cP.font = { bold: true, size: 10, color: { argb: 'FF' + x.hdrTxt } };
+  cP.fill = fill(x.hdr);
+  cP.alignment = { vertical: 'middle', indent: 1 };
+
+  // Resumen (sin etiquetas HTML)
+  ws.mergeCells(4, 1, 4, nCols);
+  const cR = ws.getCell(4, 1);
+  cR.value = data.resumen.replace(/<[^>]+>/g, '');
+  cR.font = { size: 11, color: { argb: 'FF0B1C30' } };
+  cR.fill = fill('EFF4FF');
+  cR.alignment = { vertical: 'middle', wrapText: true, indent: 1 };
+  ws.getRow(4).height = 32;
+
+  // Encabezados
+  const hRow = ws.getRow(6);
+  data.cols.forEach((c, i) => {
+    const cell = hRow.getCell(i + 1);
+    cell.value = c[0].toUpperCase();
+    cell.font = { bold: true, size: 10, color: { argb: 'FF0B1C30' } };
+    cell.fill = fill('EFF4FF');
+    cell.border = bordes;
+    cell.alignment = { vertical: 'middle', horizontal: c[1] ? 'center' : 'left', wrapText: true, indent: c[1] ? 0 : 1 };
+  });
+  hRow.height = 24;
+
+  const anchos = [36, 26, 14];
+  const anchoDias = 60;
+  let r = 7;
+  data.filas.forEach(f => {
+    const row = ws.getRow(r);
+    // Colaborador (nombre + código en gris)
+    const c1 = row.getCell(1);
+    c1.value = { richText: [
+      { text: String(f.p['COLABORADOR'] || '-'), font: { bold: true, size: 11, color: { argb: 'FF0B1C30' } } },
+      { text: '\nCód: ' + String(f.p['CODIGO']), font: { size: 9, color: { argb: 'FF444651' } } }
+    ] };
+    c1.alignment = { vertical: 'middle', wrapText: true, indent: 1 };
+    // Cuenta (etiqueta azul)
+    const c2 = row.getCell(2);
+    c2.value = String(f.p['CUENTA'] || '-');
+    c2.font = { bold: true, size: 10, color: { argb: 'FFFFFFFF' } };
+    c2.fill = fill('00236F');
+    c2.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    // DNI
+    const c3 = row.getCell(3);
+    c3.value = String(f.p['DNI'] || '-');
+    c3.font = { bold: true, size: 10 };
+    c3.alignment = { vertical: 'middle', horizontal: 'center' };
+
+    let lineas = 2;
+    f.celdas.forEach((c, i) => {
+      const cell = row.getCell(4 + i);
+      if (c.k === 'num') {
+        cell.value = c.v;
+        cell.font = { bold: true, size: 11, color: { argb: 'FF' + x.numTxt } };
+        cell.fill = fill(x.num);
+        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      } else if (c.k === 'chips') {
+        cell.value = c.chips.join('   ');
+        cell.font = { bold: true, size: 10, color: { argb: 'FF' + x.chip } };
+        cell.alignment = { vertical: 'middle', wrapText: true, indent: 1 };
+        lineas = Math.max(lineas, Math.ceil(cell.value.length / 52));
+      } else if (c.k === 'fuerte') {
+        cell.value = c.v;
+        cell.font = { bold: true, size: 10, color: { argb: 'FF' + x.numTxt } };
+        cell.fill = fill(x.num);
+        cell.alignment = { vertical: 'middle', wrapText: true, indent: 1 };
+      } else {
+        cell.value = c.v;
+        cell.font = { size: 10 };
+        cell.alignment = { vertical: 'middle', wrapText: true, indent: 1 };
+      }
+    });
+    for (let i = 1; i <= nCols; i++) row.getCell(i).border = bordes;
+    row.height = Math.max(32, lineas * 15 + 6);
+    r++;
+  });
+
+  if (!data.filas.length) {
+    ws.mergeCells(7, 1, 7, nCols);
+    const c = ws.getCell(7, 1);
+    c.value = 'No hay registros en este período.';
+    c.font = { italic: true, color: { argb: 'FF444651' } };
+    c.alignment = { horizontal: 'center', vertical: 'middle' };
+    ws.getRow(7).height = 28;
+  }
+
+  data.cols.forEach((c, i) => {
+    ws.getColumn(i + 1).width = i < 3 ? anchos[i] : (data.cols[i][0].startsWith('Días de') ? anchoDias : (c[1] ? 16 : 24));
+  });
+  ws.views = [{ state: 'frozen', ySplit: 6, showGridLines: false }];
+
+  const nombreArchivo = data.tema.archivo + '_' + nombreMesCapitalizado(detalleKpiActual.mesIdx) + '_' + detalleKpiActual.anio + '.xlsx';
+  wb.xlsx.writeBuffer().then(buffer => {
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = nombreArchivo;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    mostrarToast('Descargado: ' + nombreArchivo);
+  });
+}
+
 function cerrarDetalleKpi() { document.getElementById('detalleKpiModal').classList.add('hidden'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarDetalleKpi(); });
 
@@ -1456,9 +1685,9 @@ function renderCesesModal() {
 
   tbody.innerHTML = cesadosInfo.map(({ p, fila, dia }) => {
     return '<tr class="hover:bg-surface-container-low transition-colors">' +
-      '<td class="p-3 font-semibold"><div>' + (p['COLABORADOR'] || '-') + '</div><span class="text-[11px] text-on-surface-variant">Cód: ' + p['CODIGO'] + '</span></td>' +
-      '<td class="p-3"><span class="px-2 py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-bold">' + (p['CUENTA'] || '-') + '</span></td>' +
-      '<td class="p-3 text-center font-cell-code text-cell-code">' + (p['DNI'] || '-') + '</td>' +
+      '<td class="p-3 font-semibold"><div>' + escHtml_(p['COLABORADOR'] || '-') + '</div><span class="text-[11px] text-on-surface-variant">Cód: ' + escHtml_(p['CODIGO']) + '</span></td>' +
+      '<td class="p-3"><span class="px-2 py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-bold">' + escHtml_(p['CUENTA'] || '-') + '</span></td>' +
+      '<td class="p-3 text-center font-cell-code text-cell-code">' + escHtml_(p['DNI'] || '-') + '</td>' +
       '<td class="p-3 text-center font-cell-code text-cell-code text-error font-bold bg-error-container/30 rounded">' + (dia ? 'Día ' + dia : '-') + '</td>' +
       '<td class="p-3 text-on-surface-variant">' + (fila ? nombreMesCapitalizado(state.mesIdx) + ' ' + state.anio : '-') + '</td>' +
     '</tr>';
