@@ -3,7 +3,7 @@
 #matrizView thead th { position: sticky; top: 0; z-index: 30; }
 #matrizView thead th.sticky { z-index: 40; }
 #matrizScroll { scrollbar-width: thin; }
-</style></head><body class="bg-surface font-body-md text-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="h-14 px-margin flex items-center gap-space-sm bg-primary text-on-primary"><span class="material-symbols-outlined text-[22px]">stacked_bar_chart</span><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-tight leading-none">Control de Asistencia</span><span class="font-label-sm text-label-sm text-primary-fixed-dim leading-none mt-0.5">OSAWMS</span></div></div><div class="px-margin py-space-md"></div><nav class="px-space-md flex flex-col gap-space-xs" data-active-classes="bg-primary text-on-primary font-title-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><a aria-current="page" class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl transition-all bg-primary text-on-primary font-title-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]" data-path="matriz-de-asistencia" href="#" id="navMatriz"><span class="material-symbols-outlined text-[20px]">grid_on</span><span class="font-body-md text-body-md">Matriz de Asistencia</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="colaboradores-y-contratos" href="#" id="navColaboradores"><span class="material-symbols-outlined text-[20px]">badge</span><span class="font-body-md text-body-md">Colaboradores y Contratos</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="reporte-de-ceses-y-bajas" href="#"><span class="material-symbols-outlined text-[20px]">person_off</span><span class="font-body-md text-body-md">Reporte de Ceses y Bajas</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="metricas-ejecutivas" href="#"><span class="material-symbols-outlined text-[20px]">insights</span><span class="font-body-md text-body-md">Métricas Ejecutivas</span></a></nav></div><div class="p-space-md"><div class="bg-surface-container px-space-md py-space-sm rounded-xl flex items-center justify-between"><div class="flex flex-col"><span class="font-label-sm text-label-sm text-on-surface-variant">Sincronización</span><span class="font-cell-code text-cell-code text-primary" id="syncStatusLabel">Conectando...</span></div><span class="material-symbols-outlined text-primary text-[18px]">cloud_done</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-margin"><div class="flex items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-xl"><span class="material-symbols-outlined text-secondary text-[18px]">business</span><select class="bg-transparent font-title-md text-title-md text-on-surface outline-none cursor-pointer pr-space-xs" id="accountFilterSelect"><option value="all">Cuentas: Todas</option></select></div><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-xl"><span class="material-symbols-outlined text-secondary text-[18px]">calendar_month</span><span class="font-body-md text-body-md text-on-surface" id="headerMonthLabel">Cargando...</span><span class="material-symbols-outlined text-secondary text-[16px]">expand_more</span></div><div class="flex-1 flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-xl"><span class="material-symbols-outlined text-secondary text-[18px]">search</span><input class="w-full bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline outline-none" placeholder="Buscar DNI, colaborador o cargo... (Presione /)" type="text"></div></div><div class="flex items-center gap-space-md"><button class="p-space-xs rounded-xl hover:bg-surface-container transition-colors relative text-on-surface-variant" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error"></span></button><button class="p-space-xs rounded-xl hover:bg-surface-container transition-colors text-on-surface-variant" type="button"><span class="material-symbols-outlined text-[20px]">history_toggle_off</span></button><div class="h-6 w-px bg-surface-container-highest"></div></div></header><main class="w-full pt-14 bg-surface min-h-screen px-margin py-margin"><div class="flex flex-col w-full gap-space-lg" id="matrizView">
+</style></head><body class="bg-surface font-body-md text-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="h-14 px-margin flex items-center gap-space-sm bg-primary text-on-primary"><span class="material-symbols-outlined text-[22px]">stacked_bar_chart</span><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-tight leading-none">Control de Asistencia</span><span class="font-label-sm text-label-sm text-primary-fixed-dim leading-none mt-0.5">OSAWMS</span></div></div><div class="px-margin py-space-md"></div><nav class="px-space-md flex flex-col gap-space-xs" data-active-classes="bg-primary text-on-primary font-title-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><a aria-current="page" class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl transition-all bg-primary text-on-primary font-title-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]" data-path="matriz-de-asistencia" href="#" id="navMatriz"><span class="material-symbols-outlined text-[20px]">grid_on</span><span class="font-body-md text-body-md">Matriz de Asistencia</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="colaboradores-y-contratos" href="#" id="navColaboradores"><span class="material-symbols-outlined text-[20px]">badge</span><span class="font-body-md text-body-md">Colaboradores y Contratos</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="reporte-de-ceses-y-bajas" href="#" id="navCeses"><span class="material-symbols-outlined text-[20px]">person_off</span><span class="font-body-md text-body-md">Reporte de Ceses y Bajas</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="metricas-ejecutivas" href="#" id="navMetricas"><span class="material-symbols-outlined text-[20px]">insights</span><span class="font-body-md text-body-md">Métricas Ejecutivas</span></a></nav></div><div class="p-space-md"><div class="bg-surface-container px-space-md py-space-sm rounded-xl flex items-center justify-between"><div class="flex flex-col"><span class="font-label-sm text-label-sm text-on-surface-variant">Sincronización</span><span class="font-cell-code text-cell-code text-primary" id="syncStatusLabel">Conectando...</span></div><span class="material-symbols-outlined text-primary text-[18px]">cloud_done</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-margin"><div class="flex items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-xl"><span class="material-symbols-outlined text-secondary text-[18px]">business</span><select class="bg-transparent font-title-md text-title-md text-on-surface outline-none cursor-pointer pr-space-xs" id="accountFilterSelect"><option value="all">Cuentas: Todas</option></select></div><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-xl"><span class="material-symbols-outlined text-secondary text-[18px]">calendar_month</span><span class="font-body-md text-body-md text-on-surface" id="headerMonthLabel">Cargando...</span><span class="material-symbols-outlined text-secondary text-[16px]">expand_more</span></div><div class="flex-1 flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-xl"><span class="material-symbols-outlined text-secondary text-[18px]">search</span><input class="w-full bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline outline-none" placeholder="Buscar DNI, colaborador o cargo... (Presione /)" type="text"></div></div><div class="flex items-center gap-space-md"><button class="p-space-xs rounded-xl hover:bg-surface-container transition-colors relative text-on-surface-variant" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error"></span></button><button class="p-space-xs rounded-xl hover:bg-surface-container transition-colors text-on-surface-variant" type="button"><span class="material-symbols-outlined text-[20px]">history_toggle_off</span></button><div class="h-6 w-px bg-surface-container-highest"></div></div></header><main class="w-full pt-14 bg-surface min-h-screen px-margin py-margin"><div class="flex flex-col w-full gap-space-lg" id="matrizView">
 <!-- TOP BAR: BREADCRUMB & EXECUTIVE ACTIONS -->
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
 <div>
@@ -238,6 +238,7 @@
 </table>
 </div>
 </div>
+<div class="hidden flex-col w-full gap-space-lg" id="cesesView"><div class="flex items-center justify-between flex-wrap gap-space-sm"><h1 class="font-headline-lg text-headline-lg text-on-surface">Reporte de Ceses y Bajas</h1><div class="flex items-center gap-space-sm"><select id="cesesFiltroMes" onchange="renderReporteCeses()" class="rounded-xl border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body-md"></select><button class="inline-flex items-center gap-1.5 px-space-md py-2 rounded-xl bg-primary text-on-primary font-title-md text-title-md hover:bg-tertiary shadow-sm" onclick="descargarReporteCesesExcel()" type="button"><span class="material-symbols-outlined text-[18px]">download</span>Descargar Excel</button></div></div><div class="bg-error-container/40 text-on-error-container p-space-md rounded-xl" id="cesesReporteResumen"></div><div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-x-auto"><table class="w-full text-left"><thead class="bg-surface-container-low font-label-sm text-label-sm text-on-surface-variant uppercase"><tr><th class="p-3 text-center">N°</th><th class="p-3 ">Colaborador</th><th class="p-3 ">Cuenta</th><th class="p-3 text-center">DNI</th><th class="p-3 text-center">Código</th><th class="p-3 ">Fecha de cese</th><th class="p-3 ">Mes de cese</th></tr></thead><tbody id="cesesReporteBody" class="font-body-sm text-body-sm divide-y divide-surface-container-high"></tbody></table></div></div><div class="hidden flex-col w-full gap-space-lg" id="metricasView"><div class="flex items-center justify-between flex-wrap gap-space-sm"><h1 class="font-headline-lg text-headline-lg text-on-surface">Métricas Ejecutivas</h1><div class="flex items-center bg-surface-container-lowest rounded-xl shadow-sm"><button class="p-2 rounded-xl hover:bg-surface-container" onclick="cambiarMesMetricas(-1)" type="button"><span class="material-symbols-outlined">chevron_left</span></button><span class="font-title-md text-title-md font-bold min-w-[150px] text-center" id="metricasMes"></span><button class="p-2 rounded-xl hover:bg-surface-container" onclick="cambiarMesMetricas(1)" type="button"><span class="material-symbols-outlined">chevron_right</span></button></div></div><div class="grid grid-cols-1 md:grid-cols-3 gap-space-md" id="metricasTarjetas"></div><div class="bg-surface-container-lowest rounded-xl shadow-sm p-space-md"><div class="flex items-center justify-between flex-wrap gap-2 mb-space-sm"><h2 class="font-title-md text-title-md font-bold">Evolución últimos 6 meses (días)</h2><div class="flex gap-3 font-label-sm text-label-sm"><span><span class="inline-block w-3 h-3 rounded bg-error"></span> Faltas</span><span><span class="inline-block w-3 h-3 rounded bg-amber-600"></span> Licencias</span><span><span class="inline-block w-3 h-3 rounded bg-purple-400"></span> Vacaciones</span></div></div><div class="flex justify-around items-end" id="metricasEvolucion"></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md"><div><h2 class="font-title-md text-title-md font-bold mb-2">Por cuenta (días)</h2><div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-x-auto"><table class="w-full text-left"><thead class="bg-surface-container-low font-label-sm text-label-sm text-on-surface-variant uppercase"><tr><th class="p-3 ">Cuenta</th><th class="p-3 text-center">Faltas</th><th class="p-3 text-center">Licencias</th><th class="p-3 text-center">Vacaciones</th></tr></thead><tbody id="metricasCuentas" class="font-body-sm text-body-sm divide-y divide-surface-container-high"></tbody></table></div></div><div><h2 class="font-title-md text-title-md font-bold mb-2">Top 5 con más faltas</h2><div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-x-auto"><table class="w-full text-left"><thead class="bg-surface-container-low font-label-sm text-label-sm text-on-surface-variant uppercase"><tr><th class="p-3 ">N°</th><th class="p-3 ">Colaborador</th><th class="p-3 text-center">Faltas</th></tr></thead><tbody id="metricasTop" class="font-body-sm text-body-sm divide-y divide-surface-container-high"></tbody></table></div></div></div></div>
 <!-- MODAL: DETALLE KPI (Faltas / DM / Licencias / Vacaciones / Ceses) -->
 <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-inverse-surface/40 backdrop-blur-sm hidden" id="detalleKpiModal" onclick="if(event.target===this)cerrarDetalleKpi()">
 <div class="bg-surface-container-lowest w-full max-w-4xl rounded-xl shadow-xl flex flex-col overflow-hidden">
@@ -977,30 +978,139 @@ function cambiarMes(delta) {
   render();
 }
 
+
+// Cuenta de respaldo: si el colaborador ya no tiene CUENTA en RELACION DE PERSONAL, se toma de ASISTENCIA.
+function personalConCuenta_() {
+  return state.personal.map(p => {
+    if (p['CUENTA']) return p;
+    const f = state.asistencia.find(r => String(r['CODIGO']) === String(p['CODIGO']) && r['CUENTA']);
+    return f ? Object.assign({}, p, { CUENTA: f['CUENTA'] }) : p;
+  });
+}
+
+function exportarExcelSimple_(titulo, sub, cabeceras, filas, xl, archivo) {
+  if (typeof ExcelJS === 'undefined') { alert('No se pudo cargar el generador de Excel. Verifica tu conexión.'); return; }
+  const wb = new ExcelJS.Workbook(), ws = wb.addWorksheet(titulo.slice(0, 30));
+  const fill = c => ({ type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + c } });
+  const n = cabeceras.length;
+  [[1, titulo, 14], [2, sub, 10]].forEach(([r, t, sz]) => {
+    ws.mergeCells(r, 1, r, n);
+    const c = ws.getCell(r, 1); c.value = t; c.fill = fill(xl.hdr);
+    c.font = { bold: true, size: sz, color: { argb: 'FF' + xl.hdrTxt } }; c.alignment = { vertical: 'middle', indent: 1 };
+  });
+  ws.getRow(1).height = 26;
+  cabeceras.forEach((t, i) => {
+    const c = ws.getRow(4).getCell(i + 1); c.value = t.toUpperCase(); c.fill = fill('EFF4FF');
+    c.font = { bold: true, size: 10 }; c.alignment = { vertical: 'middle', wrapText: true };
+  });
+  const borde = { style: 'thin', color: { argb: 'FFD3E4FE' } };
+  filas.forEach((f, ri) => f.forEach((v, i) => {
+    const c = ws.getRow(5 + ri).getCell(i + 1); c.value = v;
+    c.border = { top: borde, bottom: borde, left: borde, right: borde };
+    c.alignment = { vertical: 'middle', wrapText: true };
+    if (i >= n - 2) { c.fill = fill(xl.num); c.font = { bold: true, color: { argb: 'FF' + xl.numTxt } }; }
+  }));
+  cabeceras.forEach((t, i) => { ws.getColumn(i + 1).width = Math.min(40, Math.max(t.length + 4, ...filas.map(f => String(f[i]).length + 3))); });
+  ws.views = [{ state: 'frozen', ySplit: 4, showGridLines: false }];
+  wb.xlsx.writeBuffer().then(buf => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+    a.download = archivo; document.body.appendChild(a); a.click(); a.remove();
+    mostrarToast('Descargado: ' + archivo);
+  });
+}
+
+// ---------- Vista: Reporte de Ceses y Bajas (lista completa de cesados) ----------
+function listaCesados_() {
+  const out = [];
+  personalConCuenta_().forEach(p => {
+    const c = fechaCeseDe_(p['CODIGO']);
+    if (c) out.push({ p, c });
+  });
+  return out.sort((x, y) => new Date(y.c.anio, y.c.mesIdx, y.c.dia || 1) - new Date(x.c.anio, x.c.mesIdx, x.c.dia || 1));
+}
+function filasReporteCeses_() {
+  const fil = (document.getElementById('cesesFiltroMes') || {}).value || 'todos';
+  return listaCesados_().filter(x => fil === 'todos' || fil === x.c.anio + '-' + x.c.mesIdx).map(({ p, c }) => ({
+    p, fecha: c.dia ? fmtFechaCorta_(new Date(c.anio, c.mesIdx, c.dia)) + ' ' + c.anio : '-', mes: nombreMesCapitalizado(c.mesIdx) + ' ' + c.anio
+  }));
+}
+function renderReporteCeses() {
+  const sel = document.getElementById('cesesFiltroMes');
+  if (sel && !sel.dataset.listo) {
+    const meses = [...new Set(listaCesados_().map(x => x.c.anio + '-' + x.c.mesIdx))];
+    sel.innerHTML = '<option value="todos">Todos los meses</option>' + meses.map(m => { const [a, i] = m.split('-'); return '<option value="' + m + '">' + nombreMesCapitalizado(Number(i)) + ' ' + a + '</option>'; }).join('');
+    sel.dataset.listo = '1';
+  }
+  const filas = filasReporteCeses_();
+  document.getElementById('cesesReporteResumen').innerHTML = '<b>' + filas.length + '</b> colaborador(es) cesado(s).';
+  document.getElementById('cesesReporteBody').innerHTML = filas.map((f, i) => '<tr class="hover:bg-surface-container-low"><td class="p-3 text-center">' + (i + 1) + '</td><td class="p-3 font-semibold">' + escHtml_(f.p['COLABORADOR'] || '-') + '</td><td class="p-3"><span class="px-2 py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-bold">' + escHtml_(f.p['CUENTA'] || '-') + '</span></td><td class="p-3 text-center">' + escHtml_(f.p['DNI'] || '-') + '</td><td class="p-3 text-center">' + escHtml_(f.p['CODIGO']) + '</td><td class="p-3 font-bold text-error bg-error-container/30">' + escHtml_(f.fecha) + '</td><td class="p-3">' + f.mes + '</td></tr>').join('') || '<tr><td colspan="7" class="p-6 text-center text-on-surface-variant">No hay personal cesado.</td></tr>';
+}
+function descargarReporteCesesExcel() {
+  const filas = filasReporteCeses_().map((f, i) => [i + 1, f.p['COLABORADOR'] || '-', f.p['CUENTA'] || '-', f.p['DNI'] || '-', String(f.p['CODIGO']), f.fecha, f.mes]);
+  exportarExcelSimple_('Reporte de Ceses y Bajas', 'Total: ' + filas.length + ' colaborador(es) cesado(s)', ['N°', 'Colaborador', 'Cuenta', 'DNI', 'Código', 'Fecha de cese', 'Mes de cese'], filas, DETALLE_TEMAS.ceses.xl, 'Reporte_Ceses_y_Bajas.xlsx');
+}
+
+// ---------- Vista: Métricas Ejecutivas (faltas, licencias y vacaciones) ----------
+const metricasPeriodo = { anio: null, mesIdx: null };
+function metricasMes_(anio, mesIdx) {
+  const r = { F: 0, L: 0, V: 0, DM: 0, cuentas: {}, personas: [] };
+  const n = diasEnMes(anio, mesIdx);
+  personalConCuenta_().forEach(p => {
+    const fila = filaAsistenciaDe(p['CODIGO'], anio, mesIdx);
+    if (!fila) return;
+    const c = { F: 0, L: 0, V: 0, DM: 0 };
+    for (let d = 1; d <= n; d++) { const v = String(fila[String(d)] || '').toUpperCase(); if (c[v] !== undefined) c[v]++; }
+    ['F', 'L', 'V', 'DM'].forEach(k => r[k] += c[k]);
+    const cu = String(p['CUENTA'] || 'SIN CUENTA');
+    const a = r.cuentas[cu] = r.cuentas[cu] || { F: 0, L: 0, V: 0 };
+    a.F += c.F; a.L += c.L; a.V += c.V;
+    if (c.F) r.personas.push({ p, f: c.F });
+  });
+  r.personas.sort((x, y) => y.f - x.f);
+  return r;
+}
+function cambiarMesMetricas(d) {
+  const f = new Date(metricasPeriodo.anio, metricasPeriodo.mesIdx + d, 1);
+  metricasPeriodo.anio = f.getFullYear(); metricasPeriodo.mesIdx = f.getMonth(); renderMetricas();
+}
+function renderMetricas() {
+  if (metricasPeriodo.anio === null) { metricasPeriodo.anio = state.anio; metricasPeriodo.mesIdx = state.mesIdx; }
+  const { anio, mesIdx } = metricasPeriodo;
+  const m = metricasMes_(anio, mesIdx), ant = new Date(anio, mesIdx - 1, 1), mAnt = metricasMes_(ant.getFullYear(), ant.getMonth());
+  document.getElementById('metricasMes').textContent = nombreMesCapitalizado(mesIdx) + ' ' + anio;
+  const tarjeta = (tit, k, t) => {
+    const dif = m[k] - mAnt[k], pct = mAnt[k] ? Math.round(dif / mAnt[k] * 100) + '%' : '';
+    const txt = dif === 0 ? 'Igual que el mes anterior' : (dif > 0 ? '▲ +' : '▼ ') + dif + ' vs mes anterior ' + (pct ? '(' + pct + ')' : '');
+    return '<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border-l-4 ' + t.borde + '"><div class="font-label-sm text-label-sm uppercase font-bold text-on-surface-variant">' + tit + '</div><div class="font-headline-lg text-headline-lg font-bold ' + t.txt + '">' + m[k] + ' <span class="text-label-sm font-normal">día(s)</span></div><div class="font-label-sm text-label-sm text-on-surface-variant">' + txt + '</div></div>';
+  };
+  document.getElementById('metricasTarjetas').innerHTML = tarjeta('Faltas', 'F', { borde: 'border-error', txt: 'text-error' }) + tarjeta('Licencias', 'L', { borde: 'border-amber-600', txt: 'text-amber-700' }) + tarjeta('Vacaciones', 'V', { borde: 'border-purple-400', txt: 'text-purple-900' });
+  // Evolución de los últimos 6 meses
+  const serie = []; for (let i = 5; i >= 0; i--) { const f = new Date(anio, mesIdx - i, 1); serie.push({ f, m: i === 0 ? m : metricasMes_(f.getFullYear(), f.getMonth()) }); }
+  const max = Math.max(1, ...serie.map(x => Math.max(x.m.F, x.m.L, x.m.V)));
+  const barra = (v, c) => '<div class="w-5 rounded-t ' + c + '" style="height:' + Math.max(2, Math.round(v / max * 120)) + 'px" title="' + v + '"></div>';
+  document.getElementById('metricasEvolucion').innerHTML = serie.map(x => '<div class="flex flex-col items-center gap-1"><div class="flex items-end gap-1 h-[130px]">' + barra(x.m.F, 'bg-error') + barra(x.m.L, 'bg-amber-600') + barra(x.m.V, 'bg-purple-400') + '</div><div class="font-label-sm text-label-sm">' + nombreMesCapitalizado(x.f.getMonth()).slice(0, 3) + '</div><div class="text-[10px] text-on-surface-variant">' + x.m.F + ' · ' + x.m.L + ' · ' + x.m.V + '</div></div>').join('');
+  // Por cuenta
+  const cu = Object.entries(m.cuentas).filter(([, v]) => v.F + v.L + v.V > 0).sort((a, b) => b[1].F - a[1].F);
+  document.getElementById('metricasCuentas').innerHTML = cu.map(([n, v]) => '<tr><td class="p-3 font-semibold">' + escHtml_(n) + '</td><td class="p-3 text-center font-bold text-error">' + v.F + '</td><td class="p-3 text-center font-bold text-amber-700">' + v.L + '</td><td class="p-3 text-center font-bold text-purple-900">' + v.V + '</td></tr>').join('') || '<tr><td colspan="4" class="p-4 text-center text-on-surface-variant">Sin registros.</td></tr>';
+  document.getElementById('metricasTop').innerHTML = m.personas.slice(0, 5).map((x, i) => '<tr><td class="p-3">' + (i + 1) + '</td><td class="p-3 font-semibold">' + escHtml_(x.p['COLABORADOR'] || '-') + '</td><td class="p-3 text-center font-bold text-error bg-error-container/30">' + x.f + '</td></tr>').join('') || '<tr><td colspan="3" class="p-4 text-center text-on-surface-variant">Sin faltas este mes.</td></tr>';
+}
+
 // ---------- Navegación entre vistas (Matriz / Colaboradores) ----------
 
 function cambiarVista(vista) {
   state.vistaActual = vista;
-  const matrizView = document.getElementById('matrizView');
-  const colaboradoresView = document.getElementById('colaboradoresView');
-  const navMatriz = document.getElementById('navMatriz');
-  const navColaboradores = document.getElementById('navColaboradores');
-
+  const mapa = { matriz: ['matrizView', 'navMatriz'], colaboradores: ['colaboradoresView', 'navColaboradores'], ceses: ['cesesView', 'navCeses'], metricas: ['metricasView', 'navMetricas'] };
   const activo = 'bg-primary text-on-primary font-title-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]';
   const inactivo = 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface';
-
-  if (vista === 'colaboradores') {
-    matrizView.classList.add('hidden'); matrizView.classList.remove('flex');
-    colaboradoresView.classList.remove('hidden'); colaboradoresView.classList.add('flex');
-    navMatriz.className = 'flex items-center gap-space-md px-space-md py-space-sm rounded-xl transition-all ' + inactivo;
-    navColaboradores.className = 'flex items-center gap-space-md px-space-md py-space-sm rounded-xl transition-all ' + activo;
-    renderColaboradoresTable();
-  } else {
-    colaboradoresView.classList.add('hidden'); colaboradoresView.classList.remove('flex');
-    matrizView.classList.remove('hidden'); matrizView.classList.add('flex');
-    navColaboradores.className = 'flex items-center gap-space-md px-space-md py-space-sm rounded-xl transition-all ' + inactivo;
-    navMatriz.className = 'flex items-center gap-space-md px-space-md py-space-sm rounded-xl transition-all ' + activo;
-  }
+  Object.entries(mapa).forEach(([k, [vid, nid]]) => {
+    const v = document.getElementById(vid), n = document.getElementById(nid), on = k === vista;
+    if (v) { v.classList.toggle('hidden', !on); v.classList.toggle('flex', on); }
+    if (n) n.className = 'flex items-center gap-space-md px-space-md py-space-sm rounded-xl transition-all ' + (on ? activo : inactivo);
+  });
+  if (vista === 'colaboradores') renderColaboradoresTable();
+  if (vista === 'ceses') renderReporteCeses();
+  if (vista === 'metricas') renderMetricas();
 }
 
 // ---------- Vista: Colaboradores y Contratos ----------
@@ -1410,7 +1520,7 @@ function datosDetalleKpi_(tipo, anio, mesIdx) {
       licencias: { cod: 'L',  col: 'LICENCIA', nom: 'día(s) de licencia', colTitulo: 'Días',    diasTitulo: 'Días de licencia' }
     }[tipo];
     cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], [cfg.colTitulo, 1], [cfg.diasTitulo]];
-    state.personal.forEach(p => {
+    personalConCuenta_().forEach(p => {
       const fila = filaAsistenciaDe(p['CODIGO'], anio, mesIdx);
       if (!fila) return;
       const dias = [];
@@ -1429,7 +1539,7 @@ function datosDetalleKpi_(tipo, anio, mesIdx) {
   } else if (tipo === 'vacaciones') {
     cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], ['Días', 1], ['Desde'], ['Último día'], ['Retorna']];
     const lista = [];
-    state.personal.forEach(p => bloquesVacaciones_(p['CODIGO'], anio, mesIdx).forEach(b => lista.push({ p, b })));
+    personalConCuenta_().forEach(p => bloquesVacaciones_(p['CODIGO'], anio, mesIdx).forEach(b => lista.push({ p, b })));
     lista.sort((a, b) => a.b.hasta - b.b.hasta || String(a.p['COLABORADOR']).localeCompare(String(b.p['COLABORADOR'])));
     lista.forEach(({ p, b }) => {
       const ret = new Date(b.hasta); ret.setDate(ret.getDate() + 1);
@@ -1442,31 +1552,20 @@ function datosDetalleKpi_(tipo, anio, mesIdx) {
     });
     const diasMes = lista.reduce((t, x) => t + x.b.dias.filter(d => d.getMonth() === mesIdx && d.getFullYear() === anio).length, 0);
     resumen = '<b>' + new Set(lista.map(x => x.p['CODIGO'])).size + '</b> colaborador(es) con vacaciones en ' + etiqueta + ' (<b>' + diasMes + '</b> día(s) dentro del mes). El retorno es el día siguiente al último día de vacaciones.';
-  } else { // ceses
-    cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], ['Fecha de cese'], ['Condición'], ['Días cesado en el mes', 1]];
+  } else { // ceses: solo las bajas ocurridas en el mes
+    cols = [['Colaborador'], ['Cuenta / Cliente'], ['DNI', 1], ['Fecha de cese'], ['Días cesado en el mes', 1]];
     const lista = [];
-    state.personal.forEach(p => {
+    personalConCuenta_().forEach(p => {
       const cese = fechaCeseDe_(p['CODIGO']);
-      if (!cese) return;
-      // Entra si el cese ocurrió en este mes o antes (cesado acumulado).
-      if (cese.anio > anio || (cese.anio === anio && cese.mesIdx > mesIdx)) return;
-      const delMes = cese.anio === anio && cese.mesIdx === mesIdx;
-      const fila = filaAsistenciaDe(p['CODIGO'], anio, mesIdx);
-      let diasC = 0;
-      if (fila) for (let d = 1; d <= nDias; d++) if (String(fila[String(d)] || '').toUpperCase() === 'C') diasC++;
-      lista.push({ p, cese, delMes, diasC });
+      if (!cese || cese.anio !== anio || cese.mesIdx !== mesIdx) return;
+      lista.push({ p, cese, diasC: cese.dia ? nDias - cese.dia + 1 : 0 });
     });
-    lista.sort((a, b) => (b.delMes - a.delMes) || (new Date(a.cese.anio, a.cese.mesIdx, a.cese.dia || 1) - new Date(b.cese.anio, b.cese.mesIdx, b.cese.dia || 1)));
-    lista.forEach(({ p, cese, delMes, diasC }) => {
-      const fechaTxt = cese.dia ? fmtFechaCorta_(new Date(cese.anio, cese.mesIdx, cese.dia)) + ' ' + cese.anio : nombreMesCapitalizado(cese.mesIdx) + ' ' + cese.anio;
-      filas.push({ p, celdas: [
-        { k: 'fuerte', v: fechaTxt },
-        { k: 'texto', v: delMes ? 'Baja del mes' : 'Cesado de meses anteriores' },
-        { k: 'num', v: diasC }
-      ] });
+    lista.sort((x, y) => (x.cese.dia || 0) - (y.cese.dia || 0));
+    lista.forEach(({ p, cese, diasC }) => {
+      const f = cese.dia ? fmtFechaCorta_(new Date(anio, mesIdx, cese.dia)) + ' ' + anio : etiqueta;
+      filas.push({ p, celdas: [{ k: 'fuerte', v: f }, { k: 'num', v: diasC }] });
     });
-    const nuevas = lista.filter(x => x.delMes).length;
-    resumen = '<b>' + nuevas + '</b> baja(s) en ' + etiqueta + ' y <b>' + (lista.length - nuevas) + '</b> cesado(s) de meses anteriores (<b>' + lista.length + '</b> en total).';
+    resumen = '<b>' + lista.length + '</b> baja(s) en ' + etiqueta + '. La lista completa de cesados está en <i>Reporte de Ceses y Bajas</i>.';
   }
   return { tipo, etiqueta, cols, filas, resumen, tema: DETALLE_TEMAS[tipo] };
 }
@@ -1950,6 +2049,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Navegación entre vistas
   document.getElementById('navMatriz')?.addEventListener('click', (e) => { e.preventDefault(); cambiarVista('matriz'); });
   document.getElementById('navColaboradores')?.addEventListener('click', (e) => { e.preventDefault(); cambiarVista('colaboradores'); });
+  document.getElementById('navCeses')?.addEventListener('click', (e) => { e.preventDefault(); cambiarVista('ceses'); });
+  document.getElementById('navMetricas')?.addEventListener('click', (e) => { e.preventDefault(); cambiarVista('metricas'); });
 
   // Ceses Modal open/close handlers
   const cesesModal = document.getElementById('cesesModal');
