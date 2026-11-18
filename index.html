@@ -227,7 +227,10 @@
 <div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant"><span>OPERACIONES RR.HH.</span><span class="material-symbols-outlined text-[14px]">chevron_right</span><span class="text-primary font-semibold">COLABORADORES Y CONTRATOS</span></div>
 <div class="flex items-center justify-between">
 <h1 class="font-headline-lg text-headline-lg text-on-surface">Colaboradores y Contratos</h1>
+<div class="flex items-center gap-space-sm">
+<button class="inline-flex items-center gap-space-xs px-space-lg py-2.5 rounded-xl bg-surface-container-low text-on-surface font-title-md text-title-md shadow-sm hover:bg-surface-container transition-all cursor-pointer" onclick="descargarColaboradoresExcel()" type="button"><span class="material-symbols-outlined text-[20px]">download</span><span>Descargar Excel</span></button>
 <button class="px-space-lg py-2.5 rounded-xl bg-primary text-on-primary font-title-md text-title-md shadow-md hover:bg-tertiary transition-all inline-flex items-center gap-space-xs cursor-pointer" onclick="abrirNuevoColaborador()" type="button"><span class="material-symbols-outlined text-[20px]">person_add</span><span>Nuevo Colaborador</span></button>
+</div>
 </div>
 <div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-x-auto">
 <table class="w-full text-left">
@@ -1133,6 +1136,31 @@ function renderColaboradoresTable() {
       '<td class="p-3 text-center"><button class="p-1.5 rounded-lg hover:bg-surface-container text-primary cursor-pointer" data-codigo="' + escHtml_(p['CODIGO']) + '" onclick="abrirEditarColaborador(this.dataset.codigo)" title="Editar turno / horario" type="button"><span class="material-symbols-outlined text-[18px]">edit</span></button></td>' +
     '</tr>';
   }).join('') || '<tr><td colspan="10" class="p-6 text-center text-on-surface-variant">No hay colaboradores registrados.</td></tr>';
+}
+
+function descargarColaboradoresExcel() {
+  const lista = personalConCuenta_();
+  const filas = lista.map((p, i) => [
+    i + 1,
+    p['COLABORADOR'] || '-',
+    String(p['DNI'] || '-'),
+    String(p['CODIGO'] || '-'),
+    p['CUENTA'] || '-',
+    p['EJECUTIVO'] || '-',
+    String(p['CELULARES'] || '-'),
+    p['TURNO'] || '-',
+    p['HORARIO'] || '-',
+    estaCesado(p['CODIGO']) ? 'Cesado' : 'Activo'
+  ]);
+  const hoyTxt = fechaISO_(hoy());
+  exportarExcelSimple_(
+    'Colaboradores y Contratos',
+    'Total: ' + filas.length + ' colaborador(es) · Generado el ' + hoyTxt,
+    ['N°', 'Colaborador', 'DNI', 'Código', 'Cuenta', 'Ejecutivo', 'Celular', 'Turno', 'Horario', 'Estado'],
+    filas,
+    { hdr: 'DCE1FF', hdrTxt: '00236F', num: 'FFFFFF', numTxt: '0B1C30' },
+    'Colaboradores_y_Contratos_' + hoyTxt + '.xlsx'
+  );
 }
 
 function abrirNuevoColaborador() {
